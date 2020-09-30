@@ -1,0 +1,1 @@
+-keepnames class com.application.mapa.data.model.Password
