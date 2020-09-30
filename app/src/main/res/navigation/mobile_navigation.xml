@@ -6,7 +6,7 @@
 
     <fragment
         android:id="@+id/password_list"
-        android:name="com.application.mapa.password.list.PasswordListFragment"
+        android:name="com.application.mapa.feature.password.list.PasswordListFragment"
         android:label="Password List">
 
         <action
@@ -25,12 +25,12 @@
 
     <fragment
         android:id="@+id/create_password"
-        android:name="com.application.mapa.password.data.PasswordDataFragment"
+        android:name="com.application.mapa.feature.password.data.PasswordDataFragment"
         android:label="Create Password" />
 
     <fragment
         android:id="@+id/password_details"
-        android:name="com.application.mapa.password.data.PasswordDataFragment"
+        android:name="com.application.mapa.feature.password.data.PasswordDataFragment"
         android:label="Password Details">
         <argument
             android:name="password"

@@ -1,4 +1,4 @@
-package com.application.mapa.password.list
+package com.application.mapa.feature.password.list
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Stack
@@ -25,7 +25,7 @@ fun PasswordItem(
                 .fillMaxWidth(),
             elevation = 8.dp,
         ) {
-            Stack() {
+            Stack {
                 Text(
                     text = password.name,
                     modifier = Modifier.padding(8.dp),

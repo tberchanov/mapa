@@ -1,4 +1,4 @@
-package com.application.mapa.password.list
+package com.application.mapa.feature.password.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,11 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.application.mapa.data.model.Password
 import com.application.mapa.ui.MapaTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PasswordListFragment : Fragment() {
+
+    private val viewModel: PasswordListViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.loadPasswords()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -21,12 +30,7 @@ class PasswordListFragment : Fragment() {
             setContent {
                 MapaTheme {
                     PasswordListScreen(
-                        // TODO load data
-                        passwords = listOf(
-                            Password("1", "Name", "Value"),
-                            Password("2", "Name2", "Value2"),
-                            Password("3", "Name3", "Value3")
-                        ),
+                        passwords = viewModel.passwordList,
                         onCreatePasswordClick = {
                             findNavController().navigate(
                                 PasswordListFragmentDirections.actionPasswordListToCreatePassword()
@@ -34,7 +38,9 @@ class PasswordListFragment : Fragment() {
                         },
                         onPasswordClick = {
                             findNavController().navigate(
-                                PasswordListFragmentDirections.actionPasswordListToPasswordDetails(it)
+                                PasswordListFragmentDirections.actionPasswordListToPasswordDetails(
+                                    it
+                                )
                             )
                         }
                     )

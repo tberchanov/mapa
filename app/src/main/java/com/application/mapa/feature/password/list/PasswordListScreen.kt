@@ -1,4 +1,4 @@
-package com.application.mapa.password.list
+package com.application.mapa.feature.password.list
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text

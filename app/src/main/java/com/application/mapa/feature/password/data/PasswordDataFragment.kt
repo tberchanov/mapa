@@ -1,4 +1,4 @@
-package com.application.mapa.password.data
+package com.application.mapa.feature.password.data
 
 import android.os.Bundle
 import android.util.Log
