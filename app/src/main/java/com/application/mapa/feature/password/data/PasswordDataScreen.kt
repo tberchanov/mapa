@@ -51,7 +51,7 @@ fun PasswordDataScreen(
 @Composable
 fun SavePasswordButton(
     onSavePasswordClick: (Password) -> Unit,
-    passwordId: String,
+    passwordId: Long,
     passwordNameState: State<TextFieldValue>,
     passwordValueState: State<TextFieldValue>,
 ) {
@@ -91,5 +91,5 @@ fun PasswordTextField(hint: String, state: MutableState<TextFieldValue>) {
 @Preview
 @Composable
 fun PasswordDataScreenPreview() {
-    PasswordDataScreen(password = Password("1", "Gmail", "Qwert_123"), {})
+    PasswordDataScreen(password = Password(1, "Gmail", "Qwert_123"), {})
 }

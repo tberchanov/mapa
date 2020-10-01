@@ -18,9 +18,9 @@ import com.application.mapa.data.model.Password
 fun PasswordListScreenPreview() {
     PasswordListScreen(
         passwords = listOf(
-            Password("1", "Name", "Value"),
-            Password("2", "Name2", "Value2"),
-            Password("3", "Name3", "Value3")
+            Password(1, "Name", "Value"),
+            Password(2, "Name2", "Value2"),
+            Password(3, "Name3", "Value3")
         )
     )
 }

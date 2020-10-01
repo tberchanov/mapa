@@ -16,11 +16,6 @@ class PasswordListFragment : Fragment() {
 
     private val viewModel: PasswordListViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.loadPasswords()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -47,5 +42,10 @@ class PasswordListFragment : Fragment() {
                 }
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.loadData()
     }
 }

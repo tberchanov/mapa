@@ -1,5 +1,6 @@
 package com.application.mapa.feature.password.list
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -7,23 +8,27 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.mapa.data.model.Password
+import com.application.mapa.data.repository.PasswordRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
-class PasswordListViewModel @ViewModelInject constructor() : ViewModel() {
+class PasswordListViewModel @ViewModelInject constructor(
+    private val passwordRepository: PasswordRepository
+) : ViewModel() {
 
     var passwordList by mutableStateOf(listOf<Password>())
         private set
 
-    fun loadPasswords() {
+    fun loadData() {
         viewModelScope.launch(Dispatchers.IO) {
-            delay(4000)
-            passwordList = listOf(
-                Password("1", "Name", "Value"),
-                Password("2", "Name2", "Value2"),
-                Password("3", "Name3", "Value3")
-            )
+            passwordRepository.observePasswords().collect {
+                Log.e("PasswordListViewModel", "collect: $it")
+                withContext(Dispatchers.Main) {
+                    passwordList = it
+                }
+            }
         }
     }
 }

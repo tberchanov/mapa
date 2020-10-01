@@ -39,5 +39,5 @@ fun PasswordItem(
 @Preview
 @Composable
 fun PasswordItemPreview() {
-    PasswordItem(password = Password("1", "name", "value"))
+    PasswordItem(password = Password(1, "name", "value"))
 }
