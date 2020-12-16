@@ -8,6 +8,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.ui.tooling.preview.Preview
 import com.application.mapa.R
@@ -52,8 +54,9 @@ fun PasswordListScreen(
 @Composable
 fun CreatePasswordButton(onCreatePasswordClick: () -> Unit) {
     FloatingActionButton(onClick = onCreatePasswordClick) {
-        Image(
-            asset = vectorResource(id = R.drawable.ic_add)
-        )
+        val image = loadVectorResource(id = R.drawable.ic_add)
+        image.resource.resource?.let {
+            Image(imageVector = it)
+        }
     }
 }
