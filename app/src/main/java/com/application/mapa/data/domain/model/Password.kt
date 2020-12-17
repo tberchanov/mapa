@@ -1,4 +1,4 @@
-package com.application.mapa.data.model
+package com.application.mapa.data.domain.model
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize

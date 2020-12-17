@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.application.mapa.data.model.Password
+import com.application.mapa.data.domain.model.Password
 import com.application.mapa.ui.MapaTheme
 import dagger.hilt.android.AndroidEntryPoint
 

@@ -13,25 +13,27 @@ import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.ui.tooling.preview.Preview
 import com.application.mapa.R
-import com.application.mapa.data.model.Password
+import com.application.mapa.data.domain.model.Password
+import com.application.mapa.feature.password.list.model.SelectablePassword
 
 @Preview
 @Composable
 fun PasswordListScreenPreview() {
     PasswordListScreen(
         passwords = listOf(
-            Password(1, "Name", "Value"),
-            Password(2, "Name2", "Value2"),
-            Password(3, "Name3", "Value3")
+            SelectablePassword(Password(1, "Name", "Value"), false),
+            SelectablePassword(Password(2, "Name2", "Value2"), false),
+            SelectablePassword(Password(3, "Name3", "Value3"), false)
         )
     )
 }
 
 @Composable
 fun PasswordListScreen(
-    passwords: List<Password>,
+    passwords: List<SelectablePassword>,
     onCreatePasswordClick: () -> Unit = {},
-    onPasswordClick: (Password) -> Unit = {},
+    onPasswordClick: (SelectablePassword) -> Unit = {},
+    onPasswordLongClick: (SelectablePassword) -> Unit = {},
 ) {
     Scaffold(
         topBar = {

@@ -1,7 +1,7 @@
 package com.application.mapa.data.repository
 
 import com.application.mapa.data.database.dao.PasswordDao
-import com.application.mapa.data.model.Password
+import com.application.mapa.data.domain.model.Password
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject

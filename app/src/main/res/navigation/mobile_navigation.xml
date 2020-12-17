@@ -18,7 +18,7 @@
             app:destination="@id/password_details">
             <argument
                 android:name="password"
-                app:argType="com.application.mapa.data.model.Password" />
+                app:argType="com.application.mapa.data.domain.model.Password" />
         </action>
 
     </fragment>

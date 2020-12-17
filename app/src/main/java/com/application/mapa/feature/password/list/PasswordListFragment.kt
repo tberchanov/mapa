@@ -20,12 +20,12 @@ class PasswordListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         return ComposeView(context = requireContext()).apply {
             setContent {
                 MapaTheme {
                     PasswordListScreen(
-                        passwords = viewModel.passwordList,
+                        passwords = viewModel.state.passwords,
                         onCreatePasswordClick = {
                             findNavController().navigate(
                                 PasswordListFragmentDirections.actionPasswordListToCreatePassword()
@@ -33,10 +33,11 @@ class PasswordListFragment : Fragment() {
                         },
                         onPasswordClick = {
                             findNavController().navigate(
-                                PasswordListFragmentDirections.actionPasswordListToPasswordDetails(
-                                    it
-                                )
+                                PasswordListFragmentDirections.actionPasswordListToPasswordDetails(it.password)
                             )
+                        },
+                        onPasswordLongClick = {
+                            viewModel.selectPassword(it)
                         }
                     )
                 }

@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import com.application.mapa.data.model.Password
+import com.application.mapa.data.domain.model.Password
 
 @Composable
 fun PasswordDataScreen(
