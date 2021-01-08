@@ -1,7 +1,7 @@
 package com.application.mapa.feature.password.list
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.Text
+import androidx.compose.material.Text
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Scaffold
