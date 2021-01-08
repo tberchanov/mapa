@@ -4,6 +4,7 @@ import com.application.mapa.data.database.dao.PasswordDao
 import com.application.mapa.data.model.Password
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 import javax.inject.Inject
 
 class PasswordRepositoryDB @Inject constructor(
@@ -31,6 +32,18 @@ class PasswordRepositoryDB @Inject constructor(
                     value = it.value
                 )
             }
+    }
+
+    override fun getPassword(id: Long): Flow<Password> {
+        return passwordDao.getPassword(id).mapNotNull {
+            it?.let {
+                Password(
+                    id = it.id ?: Password.UNDEFINED_ID,
+                    name = it.name,
+                    value = it.value
+                )
+            }
+        }
     }
 
     override suspend fun observePasswords(): Flow<List<Password>> {

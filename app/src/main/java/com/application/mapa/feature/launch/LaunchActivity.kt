@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.application.mapa.NavActivity
+import com.application.mapa.feature.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,16 +21,16 @@ class LaunchActivity : AppCompatActivity() {
     private fun observeState() {
         viewModel.state.observe(this) {
             if (it == LaunchState.EncryptionVerified) {
-                openNavActivity()
+                openMainActivity()
             }
         }
     }
 
-    private fun openNavActivity() {
+    private fun openMainActivity() {
         startActivity(
             Intent(
                 this,
-                NavActivity::class.java
+                MainActivity::class.java
             )
         )
         finish()
