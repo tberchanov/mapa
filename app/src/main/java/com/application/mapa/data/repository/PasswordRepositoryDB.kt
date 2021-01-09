@@ -1,7 +1,7 @@
 package com.application.mapa.data.repository
 
 import com.application.mapa.data.database.dao.PasswordDao
-import com.application.mapa.data.model.Password
+import com.application.mapa.data.domain.model.Password
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
@@ -57,5 +57,9 @@ class PasswordRepositoryDB @Inject constructor(
                 )
             }
         }
+    }
+
+    override suspend fun deletePasswords(idList: List<Long>) {
+        passwordDao.deletePasswords(idList)
     }
 }

@@ -1,1 +1,1 @@
--keepnames class com.application.mapa.data.model.Password
+-keepnames class com.application.mapa.data.domain.model.Password
