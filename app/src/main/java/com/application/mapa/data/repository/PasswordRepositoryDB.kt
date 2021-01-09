@@ -58,4 +58,8 @@ class PasswordRepositoryDB @Inject constructor(
             }
         }
     }
+
+    override suspend fun deletePasswords(idList: List<Long>) {
+        passwordDao.deletePasswords(idList)
+    }
 }

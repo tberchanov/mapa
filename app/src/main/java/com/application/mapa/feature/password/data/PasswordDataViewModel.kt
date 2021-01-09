@@ -2,7 +2,7 @@ package com.application.mapa.feature.password.data
 
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
-import com.application.mapa.data.model.Password
+import com.application.mapa.data.domain.model.Password
 import com.application.mapa.data.repository.PasswordRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -21,4 +21,7 @@ interface PasswordDao {
 
     @Query("SELECT * FROM password")
     fun observePasswords(): Flow<List<Password>>
+
+    @Query("DELETE FROM password WHERE id IN (:idList)")
+    fun deletePasswords(idList: List<Long>)
 }

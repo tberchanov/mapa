@@ -12,4 +12,6 @@ interface PasswordRepository {
     fun getPassword(id: Long): Flow<Password>
 
     suspend fun observePasswords(): Flow<List<Password>>
+
+    suspend fun deletePasswords(idList: List<Long>)
 }
