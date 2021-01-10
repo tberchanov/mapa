@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.loadVectorResource
+import androidx.compose.ui.res.stringResource
 import androidx.ui.tooling.preview.Preview
 import com.application.mapa.R
 import com.application.mapa.data.domain.model.Password
@@ -39,7 +40,7 @@ fun PasswordListScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Passwords" /*TODO move to resources*/) },
+                title = { Text(stringResource(R.string.passwords)) },
                 actions = {
                     if (selectionEnabled) {
                         IconButton(onClick = {

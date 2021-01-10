@@ -17,14 +17,16 @@ object DatabaseModule {
 
     @Singleton
     @Provides
-    fun provideDatabase(
+    fun provideDatabaseFactory(
         @ApplicationContext context: Context,
         decryptor: Decryptor
-    ): AppDatabase = AppDatabase.getInstance(
-        "passcode" /*TODO should be receive from user*/,
-        context,
-        decryptor
-    )
+    ) = DatabaseFactory(context, decryptor)
+
+    @Singleton
+    @Provides
+    fun provideDatabase(
+        databaseFactory: DatabaseFactory
+    ): AppDatabase = databaseFactory.getDatabase()
 
     @Singleton
     @Provides

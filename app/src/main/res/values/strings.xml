@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">mapa</string>
+    <string name="master_password_hint">Master password</string>
+    <string name="unlock">Unlock</string>
+    <string name="passwords">Passwords</string>
+    <string name="save">Save</string>
+    <string name="name">Name</string>
+    <string name="value">Value</string>
 </resources>

@@ -1,7 +1,6 @@
 package com.application.mapa.feature.main
 
 import android.os.Bundle
-import androidx.activity.addCallback
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.remember
@@ -9,16 +8,19 @@ import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavType
 import androidx.navigation.compose.*
 import com.application.mapa.feature.password.data.PasswordDataScreen
-import com.application.mapa.feature.password.data.PasswordDataState
 import com.application.mapa.feature.password.data.PasswordDataViewModel
 import com.application.mapa.feature.password.list.PasswordListScreen
 import com.application.mapa.feature.password.list.PasswordListViewModel
+import com.application.mapa.feature.password.master.MasterPasswordScreen
+import com.application.mapa.feature.password.master.MasterPasswordViewModel
 import com.application.mapa.navigation.Destinations.CREATE_PASSWORD
+import com.application.mapa.navigation.Destinations.MASTER_PASSWORD
 import com.application.mapa.navigation.Destinations.PASSWORDS_LIST
 import com.application.mapa.navigation.Destinations.PASSWORD_DETAILS
 import com.application.mapa.navigation.Destinations.PasswordDataArgs.PASSWORD_ID
 import com.application.mapa.navigation.NavActions
 import com.application.mapa.ui.MapaTheme
+import com.application.mapa.util.ObserveOnBackPressed
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,34 +30,37 @@ class MainActivity : AppCompatActivity() {
 
     private val passwordDataViewModel: PasswordDataViewModel by viewModels()
 
+    private val masterPasswordViewModel: MasterPasswordViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             val navController = rememberNavController()
-            navController.enableOnBackPressed(true)
             val navActions = remember(navController) { NavActions(navController) }
-
-            // TODO it should be inside of PasswordDataScreen
-            passwordDataViewModel.state.observe(this) {
-                if (it == PasswordDataState.SavingSuccess) {
-                    navActions.navigateUp()
-                }
-            }
-
-            this@MainActivity.onBackPressedDispatcher.addCallback() {
-                val currentRoute = navController.currentDestination
-                    ?.arguments?.get(KEY_ROUTE)?.defaultValue as? String
-                if (currentRoute == PASSWORDS_LIST) {
-                    onBackPasswordListClicked()
-                }
-            }
 
             MapaTheme {
                 NavHost(
                     navController = navController,
-                    startDestination = PASSWORDS_LIST
+                    startDestination = MASTER_PASSWORD
                 ) {
+                    composable(MASTER_PASSWORD) {
+                        MasterPasswordScreen(
+                            viewModel = masterPasswordViewModel,
+                            navigateToPasswordList = navActions.passwordList,
+                            onUnlockClick = {
+                                masterPasswordViewModel.verifyMasterPassword(this@MainActivity, it)
+                            }
+                        )
+                    }
                     composable(PASSWORDS_LIST) {
+                        this@MainActivity.ObserveOnBackPressed(PASSWORDS_LIST, navController) {
+                            if (passwordListViewModel.state.selectionEnabled) {
+                                passwordListViewModel.disableSelection()
+                            } else {
+                                finish()
+                            }
+                        }
+
                         PasswordListScreen(
                             passwords = passwordListViewModel.state.passwords,
                             onCreatePasswordClick = {
@@ -87,7 +92,8 @@ class MainActivity : AppCompatActivity() {
                         PasswordDataScreen(
                             null,
                             { passwordDataViewModel.savePassword(it) },
-                            passwordDataViewModel
+                            passwordDataViewModel,
+                            navActions.navigateUp
                         )
                     }
                     composable(
@@ -97,19 +103,12 @@ class MainActivity : AppCompatActivity() {
                         PasswordDataScreen(
                             backStackEntry.arguments?.getLong(PASSWORD_ID) ?: -1,
                             { passwordDataViewModel.savePassword(it) },
-                            passwordDataViewModel
+                            passwordDataViewModel,
+                            navActions.navigateUp
                         )
                     }
                 }
             }
-        }
-    }
-
-    private fun onBackPasswordListClicked() {
-        if (passwordListViewModel.state.selectionEnabled) {
-            passwordListViewModel.disableSelection()
-        } else {
-            finish()
         }
     }
 }
