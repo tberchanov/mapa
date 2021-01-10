@@ -25,4 +25,9 @@ class DatabaseFactory(
     fun getDatabase(): AppDatabase {
         return database ?: throw IllegalStateException("Database is not opened yet!")
     }
+
+    fun closeDatabase() {
+        database?.close()
+        database = null
+    }
 }

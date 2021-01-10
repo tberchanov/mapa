@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
                             viewModel = masterPasswordViewModel,
                             navigateToPasswordList = navActions.passwordList,
                             onUnlockClick = {
-                                masterPasswordViewModel.verifyMasterPassword(this@MainActivity, it)
+                                masterPasswordViewModel.verifyMasterPassword(it)
                             }
                         )
                     }

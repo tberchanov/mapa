@@ -1,8 +1,8 @@
 package com.application.mapa.feature.encription
 
-import android.content.Context
 import android.os.Build
 import android.util.Base64
+import com.application.mapa.feature.encription.storable.StorableManager
 import java.security.AlgorithmParameters
 import java.security.SecureRandom
 import javax.crypto.Cipher
@@ -14,9 +14,9 @@ class Encryptor(
     private val keyGenerator: KeyGenerator
 ) {
 
-    fun persistRawKey(rawByteKey: ByteArray, userPasscode: CharArray, context: Context) {
+    fun persistRawKey(rawByteKey: ByteArray, userPasscode: CharArray) {
         val storable = toStorable(rawByteKey, userPasscode)
-        storableManager.saveToPrefs(context, storable)
+        storableManager.saveStorable(storable)
     }
 
     /**

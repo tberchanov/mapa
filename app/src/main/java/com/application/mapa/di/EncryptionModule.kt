@@ -1,13 +1,16 @@
 package com.application.mapa.di
 
+import android.content.Context
 import com.application.mapa.feature.encription.Decryptor
 import com.application.mapa.feature.encription.Encryptor
 import com.application.mapa.feature.encription.KeyGenerator
-import com.application.mapa.feature.encription.StorableManager
+import com.application.mapa.feature.encription.storable.StorableManager
+import com.application.mapa.feature.encription.storable.StorableManagerCryptoFile
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ApplicationComponent
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Singleton
 
 @Module
@@ -20,7 +23,10 @@ class EncryptionModule {
 
     @Singleton
     @Provides
-    fun provideStorableManager() = StorableManager()
+    fun provideStorableManager(
+        @ApplicationContext
+        context: Context
+    ): StorableManager = StorableManagerCryptoFile(context)
 
     @Singleton
     @Provides

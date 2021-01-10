@@ -9,7 +9,7 @@ import java.security.SecureRandom
  * @return a byte array containing random values
  */
 internal fun generateRandomKey(): ByteArray =
-    ByteArray(32).apply {
+    ByteArray(64).apply {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             SecureRandom.getInstanceStrong().nextBytes(this)
         } else {

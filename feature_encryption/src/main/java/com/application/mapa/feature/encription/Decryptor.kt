@@ -2,6 +2,7 @@ package com.application.mapa.feature.encription
 
 import android.content.Context
 import android.util.Base64
+import com.application.mapa.feature.encription.storable.StorableManager
 import com.application.mapa.feature.encription.util.toHex
 import javax.crypto.Cipher
 import javax.crypto.SecretKey
@@ -17,7 +18,7 @@ class Decryptor(
      * Decrypts the [Storable] instance using the [passcode].
      *
      * @pararm passcode the user's passcode
-     * @param storable the storable instance previously saved with [saveToPrefs]
+     * @param storable the storable instance previously saved with [StorableManager.saveStorable]
      * @return the raw byte key previously generated with [generateRandomKey]
      */
     fun getRawByteKey(
@@ -37,20 +38,19 @@ class Decryptor(
      * Returns the database key suitable for using with Room.
      *
      * @param passcode the user's passcode
-     * @param context the caller's context
      */
-    fun getCharKey(passcode: CharArray, context: Context): CharArray {
+    fun getCharKey(passcode: CharArray): CharArray {
         if (keyGenerator.dbCharKey == null) {
-            initKey(passcode, context)
+            initKey(passcode)
         }
         return keyGenerator.dbCharKey ?: error("Failed to decrypt database key")
     }
 
-    private fun initKey(passcode: CharArray, context: Context) {
-        val storable = storableManager.getStorable(context)
+    private fun initKey(passcode: CharArray) {
+        val storable = storableManager.getStorable()
         if (storable == null) {
             keyGenerator.createNewKey()
-            encryptor.persistRawKey(keyGenerator.rawByteKey, passcode, context)
+            encryptor.persistRawKey(keyGenerator.rawByteKey, passcode)
         } else {
             keyGenerator.rawByteKey = getRawByteKey(passcode, storable)
             keyGenerator.dbCharKey = keyGenerator.rawByteKey.toHex().toCharArray()

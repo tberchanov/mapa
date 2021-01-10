@@ -1,6 +1,5 @@
 package com.application.mapa.feature.password.master
 
-import android.content.Context
 import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.application.mapa.di.DatabaseFactory
 import com.application.mapa.feature.encription.Encryptor
 import com.application.mapa.feature.encription.KeyGenerator
-import com.application.mapa.feature.encription.StorableManager
+import com.application.mapa.feature.encription.storable.StorableManager
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerificationFailure
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerified
 import com.application.mapa.util.Event
@@ -25,14 +24,13 @@ class MasterPasswordViewModel @ViewModelInject constructor(
 
     val verificationState = MutableLiveData<Event<PasswordVerificationState>>()
 
-    fun verifyMasterPassword(context: Context, password: String) {
+    fun verifyMasterPassword(password: String) {
         viewModelScope.launch(Dispatchers.Default) {
             runCatching {
-                if (storableManager.storableEnabled(context)) {
-                    databaseFactory.openDatabase(password)
-                } else {
-                    generateKeys(context, password)
+                if (!storableManager.storableEnabled()) {
+                    generateKeys(password)
                 }
+                databaseFactory.openDatabase(password)
             }.fold(
                 onSuccess = { verificationState.postValue(Event(PasswordVerified)) },
                 onFailure = {
@@ -43,12 +41,11 @@ class MasterPasswordViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun generateKeys(context: Context, password: String) {
+    private fun generateKeys(password: String) {
         keyGenerator.createNewKey()
         encryptor.persistRawKey(
             keyGenerator.rawByteKey,
-            password.toCharArray(),
-            context
+            password.toCharArray()
         )
     }
 }
