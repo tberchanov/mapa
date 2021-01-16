@@ -11,6 +11,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.AndroidDialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.application.mapa.R
+import com.application.mapa.ui.PasswordTextField
 
 @Composable
 fun EnterPasswordDialog(
@@ -28,10 +29,7 @@ fun EnterPasswordDialog(
             Column {
                 // Empty text is needed for margin between title. Spacer doesn't work here/
                 Text(modifier = Modifier.height(0.dp), text = "")
-                TextField(
-                    value = masterPasswordTextFieldState.value,
-                    onValueChange = { masterPasswordTextFieldState.value = it }
-                )
+                PasswordTextField(state = masterPasswordTextFieldState)
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(text = "If you will have entered incorrect password, fingerprint lock will work incorrectly.\nMake sure that password is correct.")
             }

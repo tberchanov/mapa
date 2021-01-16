@@ -1,21 +1,21 @@
 package com.application.mapa.feature.password.data
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
-import androidx.compose.material.Text
-import androidx.compose.material.TextButton
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
 import com.application.mapa.data.domain.model.Password
+import com.application.mapa.ui.PasswordTextField
 
 @Composable
 fun PasswordDataScreen(
@@ -33,7 +33,7 @@ fun PasswordDataScreen(
     ) {
         val passwordName = mutableStateOf(TextFieldValue(password?.name ?: ""))
         val passwordValue = mutableStateOf(TextFieldValue(password?.value ?: ""))
-        PasswordTextField(stringResource(R.string.name), passwordName)
+        NameTextField(stringResource(R.string.name), passwordName)
         Divider(
             modifier = Modifier.preferredHeight(12.dp),
             color = Color.Transparent
@@ -48,6 +48,19 @@ fun PasswordDataScreen(
             passwordId = password?.id ?: Password.UNDEFINED_ID,
             passwordNameState = passwordName,
             passwordValueState = passwordValue
+        )
+    }
+}
+
+@Composable
+fun NameTextField(hint: String, state: MutableState<TextFieldValue>) {
+    Column {
+        Text(hint)
+        val textState = state
+        TextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = textState.value,
+            onValueChange = { textState.value = it },
         )
     }
 }
@@ -92,19 +105,6 @@ private fun ObservePasswordDataState(
                 navigateUp()
             }
         }
-}
-
-@Composable
-fun PasswordTextField(hint: String, state: MutableState<TextFieldValue>) {
-    Column {
-        Text(hint)
-        val textState = state
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = textState.value,
-            onValueChange = { textState.value = it },
-        )
-    }
 }
 
 /*
