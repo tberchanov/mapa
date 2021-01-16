@@ -1,8 +1,8 @@
 package com.application.mapa.feature.fingerprint.usecase
 
-import androidx.biometric.BiometricPrompt
 import com.application.mapa.feature.fingerprint.CryptographyManager
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
+import javax.crypto.Cipher
 
 class EncryptAndStoreDataUseCase constructor(
     private val cryptographyManager: CryptographyManager,
@@ -10,12 +10,10 @@ class EncryptAndStoreDataUseCase constructor(
 ) {
 
     fun execute(
-        authResult: BiometricPrompt.AuthenticationResult,
+        cipher: Cipher,
         data: String
     ) {
-        authResult.cryptoObject?.cipher?.apply {
-            val encryptedServerTokenWrapper = cryptographyManager.encryptData(data, this)
-            ciphertextRepository.saveCiphertext(encryptedServerTokenWrapper)
-        }
+        val encryptedServerTokenWrapper = cryptographyManager.encryptData(data, cipher)
+        ciphertextRepository.saveCiphertext(encryptedServerTokenWrapper)
     }
 }

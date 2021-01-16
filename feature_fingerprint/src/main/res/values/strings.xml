@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="biometric_prompt_title">Scan to proceed</string>
+    <string name="enter_password">Enter password</string>
+    <string name="cancel">Cancel</string>
     <string name="secret_key_name">62A169745D7FCF436C5F1BA3F89FE</string>
 </resources>

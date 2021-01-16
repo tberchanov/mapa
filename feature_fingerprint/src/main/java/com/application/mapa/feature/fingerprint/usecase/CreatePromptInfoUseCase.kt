@@ -4,15 +4,15 @@ import androidx.biometric.BiometricPrompt
 
 class CreatePromptInfoUseCase {
 
-    fun execute() = createPromptInfo()
-
-    // TODO create string resources
-    private fun createPromptInfo(): BiometricPrompt.PromptInfo =
+    fun execute(params: Params) =
         BiometricPrompt.PromptInfo.Builder()
-            .setTitle("Title")
-            .setSubtitle("Subtitle")
-            .setDescription("Description")
-            .setConfirmationRequired(false)
-            .setNegativeButtonText("Negative")
+            .setTitle(params.titleText)
+            .setNegativeButtonText(params.negativeText)
+            .setConfirmationRequired(true)
             .build()
+
+    data class Params(
+        val titleText: String,
+        val negativeText: String
+    )
 }

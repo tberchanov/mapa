@@ -35,6 +35,5 @@ ext.versions = [
         material             : '1.2.1',
         sql_cipher           : "4.4.0@aar",
         biometric            : "1.0.1",
-        security             : "1.1.0-alpha03"
-
+        security             : "1.1.0-alpha03",
 ]

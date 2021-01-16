@@ -1,27 +1,27 @@
 package com.application.mapa.feature.settings
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.fingerprint.usecase.EncryptAndStoreDataUseCase
 import com.application.mapa.feature.fingerprint.usecase.ShowBiometricPromptForEncryptionUseCase
 import com.application.mapa.feature.settings.model.SettingsAction
-import com.application.mapa.feature.settings.model.SettingsAction.ChangeBooleanSetting
+import com.application.mapa.feature.settings.model.SettingsAction.*
 import com.application.mapa.feature.settings.model.SettingsId
 import com.application.mapa.feature.settings.model.SettingsItem
 import com.application.mapa.feature.settings.model.SettingsState
+import com.application.mapa.util.ActivityProvider
 
 class SettingsViewModel @ViewModelInject constructor(
     getSettingsUseCase: GetSettingsUseCase,
+    private val activityProvider: ActivityProvider,
     private val showBiometricPromptForEncryptionUseCase: ShowBiometricPromptForEncryptionUseCase,
-    private val encryptAndStoreDataUseCase: EncryptAndStoreDataUseCase
+    private val encryptAndStoreDataUseCase: EncryptAndStoreDataUseCase,
+    private val ciphertextRepository: CiphertextRepository
 ) : ViewModel() {
 
-    val state = MutableLiveData(SettingsState(emptyList()))
-
-    // TODO use ActivityProvider instead
-    lateinit var activity: AppCompatActivity
+    val state = MutableLiveData(SettingsState(emptyList(), false))
 
     init {
         getSettingsUseCase.execute().also {
@@ -29,9 +29,23 @@ class SettingsViewModel @ViewModelInject constructor(
         }
     }
 
-    fun postAction(action: SettingsAction) {
-        when (action) {
-            is ChangeBooleanSetting -> processChangeBooleanSettings(action)
+    fun postAction(action: SettingsAction): Unit = when (action) {
+        is ChangeBooleanSetting -> processChangeBooleanSettings(action)
+        is EnterPasswordDialogCancel -> {
+            state.value = state.value?.copy(showEnterPasswordDialog = false)
+        }
+        is EnterPasswordDialogConfirm -> {
+            state.value = state.value?.copy(showEnterPasswordDialog = false)
+            processEnterPasswordDialogConfirm(action.password)
+        }
+    }
+
+    private fun processEnterPasswordDialogConfirm(password: String) {
+        activityProvider.getActivity()?.let { activity ->
+            showBiometricPromptForEncryptionUseCase.execute(activity) {
+                encryptAndStoreDataUseCase.execute(it, password)
+                showFingerprintEnabled(true)
+            }
         }
     }
 
@@ -41,14 +55,18 @@ class SettingsViewModel @ViewModelInject constructor(
         }
     }
 
-    private fun processChangeFingerprintSetting(value: Boolean) {
-        showBiometricPromptForEncryptionUseCase.execute(activity) {
-            // TODO need to get passcode from the user
-            encryptAndStoreDataUseCase.execute(it, "passcode")
+    private fun processChangeFingerprintSetting(fingerprintEnable: Boolean) {
+        if (fingerprintEnable) {
+            state.value = state.value?.copy(showEnterPasswordDialog = true)
+        } else {
+            ciphertextRepository.clearCiphertext()
+            showFingerprintEnabled(false)
         }
+    }
 
+    private fun showFingerprintEnabled(enabled: Boolean) {
         state.value = state.value?.run {
-            copy(settingsList = changeFingerprintSetting(value, settingsList))
+            copy(settingsList = changeFingerprintSetting(enabled, settingsList))
         }
     }
 

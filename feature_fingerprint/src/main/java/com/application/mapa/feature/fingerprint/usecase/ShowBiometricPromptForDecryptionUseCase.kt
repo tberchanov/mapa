@@ -6,6 +6,7 @@ import androidx.biometric.BiometricPrompt
 import com.application.mapa.feature.fingerprint.CryptographyManager
 import com.application.mapa.feature.fingerprint.R
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
+import javax.crypto.Cipher
 
 class ShowBiometricPromptForDecryptionUseCase constructor(
     private val context: Context,
@@ -17,16 +18,26 @@ class ShowBiometricPromptForDecryptionUseCase constructor(
 
     fun execute(
         activity: AppCompatActivity,
-        onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit
+        onSuccess: (Cipher) -> Unit
     ) {
         ciphertextRepository.getCiphertext()?.let { textWrapper ->
             val secretKeyName = context.getString(R.string.secret_key_name)
             val cipher = cryptographyManager.getInitializedCipherForDecryption(
                 secretKeyName, textWrapper.initializationVector
             )
-            val biometricPrompt =
-                createBiometricPromptUseCase.execute(activity, onSuccess)
-            val promptInfo = createPromptInfoUseCase.execute()
+            val biometricPrompt = createBiometricPromptUseCase.execute(
+                activity = activity,
+                processSuccess = {
+                    it.cryptoObject?.cipher?.let { cipher ->
+                        onSuccess(cipher)
+                    }
+                })
+            val promptInfo = createPromptInfoUseCase.execute(
+                CreatePromptInfoUseCase.Params(
+                    titleText = context.getString(R.string.biometric_prompt_title),
+                    negativeText = context.getString(R.string.enter_password)
+                )
+            )
             biometricPrompt.authenticate(promptInfo, BiometricPrompt.CryptoObject(cipher))
         }
     }

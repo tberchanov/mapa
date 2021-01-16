@@ -2,6 +2,7 @@ package com.application.mapa.feature.settings
 
 import android.content.Context
 import com.application.mapa.R
+import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.settings.model.SettingsId
 import com.application.mapa.feature.settings.model.SettingsItem
 import com.application.mapa.feature.settings.model.SettingsType
@@ -10,7 +11,8 @@ import javax.inject.Inject
 
 class GetSettingsUseCase @Inject constructor(
     @ApplicationContext
-    private val context: Context
+    private val context: Context,
+    private val ciphertextRepository: CiphertextRepository
 ) {
 
     fun execute(): List<SettingsItem> {
@@ -19,7 +21,7 @@ class GetSettingsUseCase @Inject constructor(
                 context.getString(R.string.fingerprint_setting),
                 SettingsId.FINGERPRINT,
                 SettingsType.SWITCH,
-                false // CiphertextRepository.hasCiphertextSaved
+                ciphertextRepository.hasCiphertextSaved()
             )
         )
     }

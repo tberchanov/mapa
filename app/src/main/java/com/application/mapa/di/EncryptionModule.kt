@@ -50,8 +50,4 @@ class EncryptionModule {
         keyGenerator,
         encryptor
     )
-
-    @Singleton
-    @Provides
-    fun provideCryptographyManager() = CryptographyManager()
 }

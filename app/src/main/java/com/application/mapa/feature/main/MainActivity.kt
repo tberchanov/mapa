@@ -1,7 +1,6 @@
 package com.application.mapa.feature.main
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.remember
@@ -24,11 +23,16 @@ import com.application.mapa.navigation.Destinations.PasswordDataArgs.PASSWORD_ID
 import com.application.mapa.navigation.Destinations.SETTINGS
 import com.application.mapa.navigation.NavActions
 import com.application.mapa.ui.MapaTheme
+import com.application.mapa.util.ActivityProvider
 import com.application.mapa.util.ObserveOnBackPressed
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var activityProvider: ActivityProvider
 
     private val passwordListViewModel: PasswordListViewModel by viewModels()
 
@@ -40,6 +44,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        activityProvider.setActivity(this)
+
         setContent {
             val navController = rememberNavController()
             val navActions = remember(navController) { NavActions(navController) }
@@ -121,5 +127,10 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        activityProvider.clear()
+        super.onDestroy()
     }
 }

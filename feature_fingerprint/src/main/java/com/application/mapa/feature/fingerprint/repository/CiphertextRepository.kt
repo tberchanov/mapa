@@ -8,5 +8,7 @@ interface CiphertextRepository {
 
     fun getCiphertext(): CiphertextWrapper?
 
+    fun clearCiphertext()
+
     fun hasCiphertextSaved(): Boolean
 }

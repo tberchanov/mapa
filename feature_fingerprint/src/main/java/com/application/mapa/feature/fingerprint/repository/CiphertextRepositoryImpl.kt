@@ -32,6 +32,13 @@ class CiphertextRepositoryImpl(
             .contains(CIPHERTEXT_WRAPPER)
     }
 
+    override fun clearCiphertext() {
+        context.getSharedPreferences(SHARED_PREFS_FILENAME, mode)
+            .edit()
+            .clear()
+            .apply()
+    }
+
     companion object {
         private const val SHARED_PREFS_FILENAME = "biometric_prefs"
         private const val CIPHERTEXT_WRAPPER = "ciphertext_wrapper"
