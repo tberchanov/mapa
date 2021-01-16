@@ -1,11 +1,12 @@
 package com.application.mapa.di
 
 import android.content.Context
-import com.application.mapa.feature.encription.Decryptor
-import com.application.mapa.feature.encription.Encryptor
-import com.application.mapa.feature.encription.KeyGenerator
-import com.application.mapa.feature.encription.storable.StorableManager
-import com.application.mapa.feature.encription.storable.StorableManagerCryptoFile
+import com.application.mapa.feature.fingerprint.CryptographyManager
+import com.application.mapa.feature.encryption.database.Decryptor
+import com.application.mapa.feature.encryption.database.Encryptor
+import com.application.mapa.feature.encryption.database.KeyGenerator
+import com.application.mapa.feature.encryption.database.storable.StorableManager
+import com.application.mapa.feature.encryption.database.storable.StorableManagerCryptoFile
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -49,4 +50,8 @@ class EncryptionModule {
         keyGenerator,
         encryptor
     )
+
+    @Singleton
+    @Provides
+    fun provideCryptographyManager() = CryptographyManager()
 }

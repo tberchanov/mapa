@@ -8,7 +8,7 @@ import androidx.sqlite.db.SupportSQLiteOpenHelper
 import com.application.mapa.data.database.AppDatabase.Companion.DB_VERSION
 import com.application.mapa.data.database.dao.PasswordDao
 import com.application.mapa.data.database.model.Password
-import com.application.mapa.feature.encription.Decryptor
+import com.application.mapa.feature.encryption.database.Decryptor
 import net.sqlcipher.database.SQLiteDatabase
 import net.sqlcipher.database.SupportFactory
 
@@ -48,9 +48,6 @@ abstract class AppDatabase : RoomDatabase() {
             passcode: String,
             decryptor: Decryptor
         ): SupportSQLiteOpenHelper.Factory {
-            // DatabaseKeyManager is a singleton that all of the above code is wrapped into.
-            // Ideally this should be injected through DI but to simplify the sample code
-            // we'll retrieve it as follows
             val dbKey = decryptor.getCharKey(passcode.toCharArray())
             return SupportFactory(SQLiteDatabase.getBytes(dbKey))
         }

@@ -3,7 +3,7 @@ package com.application.mapa.di
 import android.content.Context
 import com.application.mapa.data.database.AppDatabase
 import com.application.mapa.data.database.dao.PasswordDao
-import com.application.mapa.feature.encription.Decryptor
+import com.application.mapa.feature.encryption.database.Decryptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

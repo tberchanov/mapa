@@ -6,9 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.mapa.di.DatabaseFactory
-import com.application.mapa.feature.encription.Encryptor
-import com.application.mapa.feature.encription.KeyGenerator
-import com.application.mapa.feature.encription.storable.StorableManager
+import com.application.mapa.feature.encryption.database.Encryptor
+import com.application.mapa.feature.encryption.database.KeyGenerator
+import com.application.mapa.feature.encryption.database.storable.StorableManager
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerificationFailure
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerified
 import com.application.mapa.util.Event

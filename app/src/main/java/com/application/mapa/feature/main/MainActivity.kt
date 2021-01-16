@@ -1,6 +1,7 @@
 package com.application.mapa.feature.main
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.remember
@@ -13,11 +14,14 @@ import com.application.mapa.feature.password.list.PasswordListScreen
 import com.application.mapa.feature.password.list.PasswordListViewModel
 import com.application.mapa.feature.password.master.MasterPasswordScreen
 import com.application.mapa.feature.password.master.MasterPasswordViewModel
+import com.application.mapa.feature.settings.SettingsScreen
+import com.application.mapa.feature.settings.SettingsViewModel
 import com.application.mapa.navigation.Destinations.CREATE_PASSWORD
 import com.application.mapa.navigation.Destinations.MASTER_PASSWORD
 import com.application.mapa.navigation.Destinations.PASSWORDS_LIST
 import com.application.mapa.navigation.Destinations.PASSWORD_DETAILS
 import com.application.mapa.navigation.Destinations.PasswordDataArgs.PASSWORD_ID
+import com.application.mapa.navigation.Destinations.SETTINGS
 import com.application.mapa.navigation.NavActions
 import com.application.mapa.ui.MapaTheme
 import com.application.mapa.util.ObserveOnBackPressed
@@ -31,6 +35,8 @@ class MainActivity : AppCompatActivity() {
     private val passwordDataViewModel: PasswordDataViewModel by viewModels()
 
     private val masterPasswordViewModel: MasterPasswordViewModel by viewModels()
+
+    private val settingsViewModel: SettingsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,9 +69,7 @@ class MainActivity : AppCompatActivity() {
 
                         PasswordListScreen(
                             passwords = passwordListViewModel.state.passwords,
-                            onCreatePasswordClick = {
-                                navActions.createPassword()
-                            },
+                            onCreatePasswordClick = navActions.createPassword,
                             onDeletePasswordsClick = {
                                 passwordListViewModel.deleteSelectedPasswords()
                             },
@@ -85,6 +89,7 @@ class MainActivity : AppCompatActivity() {
                             onCloseClicked = {
                                 passwordListViewModel.disableSelection()
                             },
+                            onSettingsClicked = navActions.settings,
                             selectionEnabled = passwordListViewModel.state.selectionEnabled
                         )
                     }
@@ -105,6 +110,12 @@ class MainActivity : AppCompatActivity() {
                             { passwordDataViewModel.savePassword(it) },
                             passwordDataViewModel,
                             navActions.navigateUp
+                        )
+                    }
+                    composable(SETTINGS) {
+                        SettingsScreen(
+                            viewModel = settingsViewModel,
+                            onBackClicked = navActions.navigateUp
                         )
                     }
                 }

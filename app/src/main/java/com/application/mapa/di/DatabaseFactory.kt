@@ -2,7 +2,7 @@ package com.application.mapa.di
 
 import android.content.Context
 import com.application.mapa.data.database.AppDatabase
-import com.application.mapa.feature.encription.Decryptor
+import com.application.mapa.feature.encryption.database.Decryptor
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class DatabaseFactory(

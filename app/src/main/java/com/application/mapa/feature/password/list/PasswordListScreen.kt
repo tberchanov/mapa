@@ -1,7 +1,7 @@
 package com.application.mapa.feature.password.list
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -35,35 +35,60 @@ fun PasswordListScreen(
     onPasswordLongClick: (SelectablePassword) -> Unit = {},
     onPasswordChecked: (SelectablePassword) -> Unit = {},
     onCloseClicked: () -> Unit = {},
+    onSettingsClicked: () -> Unit = {},
     selectionEnabled: Boolean
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.passwords)) },
-                actions = {
-                    if (selectionEnabled) {
-                        IconButton(onClick = {
-                            onCloseClicked()
-                        }) {
-                            Icon(imageVector = Icons.Default.Close)
-                        }
-                    }
-                }
+            PasswordListTopBar(
+                selectionEnabled,
+                onCloseClicked,
+                onSettingsClicked
             )
         },
         floatingActionButton = {
             PasswordListButton(selectionEnabled, onCreatePasswordClick, onDeletePasswordsClick)
         },
         bodyContent = {
-            LazyColumnFor(items = passwords) { password ->
-                PasswordItem(
-                    password,
-                    selectionEnabled,
-                    onPasswordClick,
-                    onPasswordLongClick,
-                    onPasswordChecked
-                )
+            LazyColumn {
+                items(passwords) { password ->
+                    PasswordItem(
+                        password,
+                        selectionEnabled,
+                        onPasswordClick,
+                        onPasswordLongClick,
+                        onPasswordChecked
+                    )
+                }
+            }
+        }
+    )
+}
+
+@Composable
+inline fun PasswordListTopBar(
+    selectionEnabled: Boolean,
+    crossinline onCloseClicked: () -> Unit = {},
+    crossinline onSettingsClicked: () -> Unit = {},
+) {
+    TopAppBar(
+        title = { Text(stringResource(R.string.passwords)) },
+        actions = {
+            if (selectionEnabled) {
+                IconButton(onClick = {
+                    onCloseClicked()
+                }) {
+                    Icon(imageVector = Icons.Default.Close)
+                }
+            } else {
+                IconButton(onClick = {
+                    onSettingsClicked()
+                }) {
+                    val imageRes = loadVectorResource(R.drawable.ic_settings)
+                    imageRes.resource.resource?.let {
+                        Image(imageVector = it)
+                    }
+                }
             }
         }
     )

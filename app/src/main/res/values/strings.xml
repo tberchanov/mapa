@@ -6,4 +6,6 @@
     <string name="save">Save</string>
     <string name="name">Name</string>
     <string name="value">Value</string>
+    <string name="settings">Settings</string>
+    <string name="fingerprint_setting">Fingerprint lock</string>
 </resources>

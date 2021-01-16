@@ -1,5 +1,6 @@
 package com.application.mapa.util
 
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.addCallback
 import androidx.compose.runtime.Composable
@@ -15,8 +16,11 @@ inline fun ComponentActivity.ObserveOnBackPressed(
     onBackPressedDispatcher.addCallback {
         val currentRoute = navController.currentDestination
             ?.arguments?.get(KEY_ROUTE)?.defaultValue as? String
+        Log.e("TAG", "ObserveOnBackPressed: $currentRoute")
         if (currentRoute == route) {
             onBackPressed()
+        } else {
+            navController.popBackStack()
         }
     }
 }
