@@ -8,14 +8,12 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
 import com.application.mapa.data.domain.model.Password
 import com.application.mapa.ui.PasswordTextField
+import com.application.mapa.ui.textColor
 
 @Composable
 fun PasswordDataScreen(
@@ -61,6 +59,7 @@ fun NameTextField(hint: String, state: MutableState<TextFieldValue>) {
             modifier = Modifier.fillMaxWidth(),
             value = textState.value,
             onValueChange = { textState.value = it },
+            textStyle = MaterialTheme.typography.subtitle1.copy(color = textColor()),
         )
     }
 }

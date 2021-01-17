@@ -2,6 +2,7 @@ package com.application.mapa.feature.password.master
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -14,6 +15,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.application.mapa.ui.PasswordVisibilityIcon
+import com.application.mapa.ui.textColor
 
 data class MasterPasswordTextFieldState(
     val placeholder: String,
@@ -40,6 +42,7 @@ fun MasterPasswordTextField(
         value = state.value.fieldValue,
         onValueChange = { onValueChanged(it) },
         label = { Text(state.value.placeholder) },
+        textStyle = MaterialTheme.typography.subtitle1.copy(color = textColor()),
         visualTransformation = when (passwordVisibility.value) {
             true -> VisualTransformation.None
             false -> PasswordVisualTransformation()

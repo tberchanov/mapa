@@ -2,10 +2,7 @@ package com.application.mapa.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
@@ -26,6 +23,7 @@ fun PasswordTextField(hint: String? = null, state: MutableState<TextFieldValue>)
             modifier = Modifier.fillMaxWidth(),
             value = textState.value,
             onValueChange = { textState.value = it },
+            textStyle = MaterialTheme.typography.subtitle1.copy(color = textColor()),
             visualTransformation = when (passwordVisibility.value) {
                 true -> VisualTransformation.None
                 false -> PasswordVisualTransformation()

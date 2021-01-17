@@ -1,7 +1,9 @@
 package com.application.mapa.feature.settings.ui
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
@@ -12,6 +14,8 @@ import androidx.compose.ui.window.AndroidDialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.application.mapa.R
 import com.application.mapa.ui.PasswordTextField
+import com.application.mapa.ui.dialogBackgroundColor
+import com.application.mapa.ui.textColor
 
 @Composable
 fun EnterPasswordDialog(
@@ -23,7 +27,10 @@ fun EnterPasswordDialog(
     AlertDialog(
         onDismissRequest = onDialogCancelled,
         title = {
-            Text(text = stringResource(R.string.enter_master_password))
+            Text(
+                text = stringResource(R.string.enter_master_password),
+                color = textColor()
+            )
         },
         text = {
             Column {
@@ -31,7 +38,10 @@ fun EnterPasswordDialog(
                 Text(modifier = Modifier.height(0.dp), text = "")
                 PasswordTextField(state = masterPasswordTextFieldState)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(text = "If you will have entered incorrect password, fingerprint lock will work incorrectly.\nMake sure that password is correct.")
+                Text(
+                    text = stringResource(R.string.enter_password_dialog_description),
+                    color = textColor()
+                )
             }
         },
         buttons = {
@@ -55,6 +65,7 @@ fun EnterPasswordDialog(
                 }
             }
         },
-        properties = AndroidDialogProperties(securePolicy = SecureFlagPolicy.SecureOn)
+        properties = AndroidDialogProperties(securePolicy = SecureFlagPolicy.SecureOn),
+        backgroundColor = dialogBackgroundColor()
     )
 }
