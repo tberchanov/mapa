@@ -5,9 +5,8 @@ import com.application.mapa.data.domain.model.Password
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.mapNotNull
-import javax.inject.Inject
 
-class PasswordRepositoryDB @Inject constructor(
+class PasswordRepositoryDB(
     private val passwordDao: PasswordDao
 ) : PasswordRepository {
 

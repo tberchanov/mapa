@@ -1,18 +1,15 @@
-package com.application.mapa.feature.settings
+package com.application.mapa.feature.settings.usecase
 
 import android.content.Context
 import com.application.mapa.R
-import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.settings.model.SettingsId
 import com.application.mapa.feature.settings.model.SettingsItem
 import com.application.mapa.feature.settings.model.SettingsType
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
+import com.application.mapa.feature.settings.repository.SettingsRepository
 
-class GetSettingsUseCase @Inject constructor(
-    @ApplicationContext
+class GetSettingsUseCase(
     private val context: Context,
-    private val ciphertextRepository: CiphertextRepository
+    private val settingsRepository: SettingsRepository
 ) {
 
     fun execute(): List<SettingsItem> {
@@ -21,7 +18,13 @@ class GetSettingsUseCase @Inject constructor(
                 context.getString(R.string.fingerprint_setting),
                 SettingsId.FINGERPRINT,
                 SettingsType.SWITCH,
-                ciphertextRepository.hasCiphertextSaved()
+                settingsRepository.isFingerprintEnabled()
+            ),
+            SettingsItem(
+                context.getString(R.string.dark_theme_setting),
+                SettingsId.DARK_THEME,
+                SettingsType.SWITCH,
+                settingsRepository.isDarkThemeEnabled()
             )
         )
     }

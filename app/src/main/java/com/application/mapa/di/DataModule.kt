@@ -1,20 +1,22 @@
 package com.application.mapa.di
 
+import com.application.mapa.data.database.dao.PasswordDao
 import com.application.mapa.data.repository.PasswordRepository
 import com.application.mapa.data.repository.PasswordRepositoryDB
 import dagger.Binds
 import dagger.Module
+import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.components.ApplicationComponent
-import javax.inject.Singleton
+import dagger.hilt.android.components.ActivityRetainedComponent
+import dagger.hilt.android.scopes.ActivityRetainedScoped
 
 @Module
-@InstallIn(ApplicationComponent::class)
-interface DataModule {
+@InstallIn(ActivityRetainedComponent::class)
+class DataModule {
 
-    @Singleton
-    @Binds
+    @ActivityRetainedScoped
+    @Provides
     fun bindPasswordRepository(
-        passwordRepositoryDB: PasswordRepositoryDB
-    ): PasswordRepository
+        passwordDao: PasswordDao
+    ): PasswordRepository = PasswordRepositoryDB(passwordDao)
 }

@@ -22,13 +22,11 @@ object DatabaseModule {
         decryptor: Decryptor
     ) = DatabaseFactory(context, decryptor)
 
-    @Singleton
     @Provides
     fun provideDatabase(
         databaseFactory: DatabaseFactory
     ): AppDatabase = databaseFactory.getDatabase()
 
-    @Singleton
     @Provides
     fun providePasswordDao(
         appDatabase: AppDatabase

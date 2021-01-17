@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 
 private val DarkColorPalette = darkColors(
     primary = purple200,
@@ -30,8 +31,18 @@ onSurface = Color.Black,
 @Composable
 fun MapaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
+        MapaTheme.run {
+            textColor = darkTextColor
+            dialogBackgroundColor = darkDialogBackgroundColor
+            screenBackgroundColor = black
+        }
         DarkColorPalette
     } else {
+        MapaTheme.run {
+            textColor = lightTextColor
+            dialogBackgroundColor = white
+            screenBackgroundColor = white
+        }
         LightColorPalette
     }
 
@@ -41,4 +52,10 @@ fun MapaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable()
         shapes = shapes,
         content = content
     )
+}
+
+object MapaTheme {
+    var textColor: Color = lightTextColor
+    var dialogBackgroundColor = white
+    var screenBackgroundColor = white
 }

@@ -14,8 +14,8 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.application.mapa.ui.MapaTheme
 import com.application.mapa.ui.PasswordVisibilityIcon
-import com.application.mapa.ui.textColor
 
 data class MasterPasswordTextFieldState(
     val placeholder: String,
@@ -42,7 +42,7 @@ fun MasterPasswordTextField(
         value = state.value.fieldValue,
         onValueChange = { onValueChanged(it) },
         label = { Text(state.value.placeholder) },
-        textStyle = MaterialTheme.typography.subtitle1.copy(color = textColor()),
+        textStyle = MaterialTheme.typography.subtitle1.copy(color = MapaTheme.textColor),
         visualTransformation = when (passwordVisibility.value) {
             true -> VisualTransformation.None
             false -> PasswordVisualTransformation()

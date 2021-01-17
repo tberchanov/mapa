@@ -13,9 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.AndroidDialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.application.mapa.R
+import com.application.mapa.ui.MapaTheme
 import com.application.mapa.ui.PasswordTextField
-import com.application.mapa.ui.dialogBackgroundColor
-import com.application.mapa.ui.textColor
 
 @Composable
 fun EnterPasswordDialog(
@@ -29,7 +28,7 @@ fun EnterPasswordDialog(
         title = {
             Text(
                 text = stringResource(R.string.enter_master_password),
-                color = textColor()
+                color = MapaTheme.textColor
             )
         },
         text = {
@@ -40,7 +39,7 @@ fun EnterPasswordDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.enter_password_dialog_description),
-                    color = textColor()
+                    color = MapaTheme.textColor
                 )
             }
         },
@@ -66,6 +65,6 @@ fun EnterPasswordDialog(
             }
         },
         properties = AndroidDialogProperties(securePolicy = SecureFlagPolicy.SecureOn),
-        backgroundColor = dialogBackgroundColor()
+        backgroundColor = MapaTheme.dialogBackgroundColor
     )
 }

@@ -12,8 +12,8 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
 import com.application.mapa.data.domain.model.Password
+import com.application.mapa.ui.MapaTheme
 import com.application.mapa.ui.PasswordTextField
-import com.application.mapa.ui.textColor
 
 @Composable
 fun PasswordDataScreen(
@@ -59,7 +59,7 @@ fun NameTextField(hint: String, state: MutableState<TextFieldValue>) {
             modifier = Modifier.fillMaxWidth(),
             value = textState.value,
             onValueChange = { textState.value = it },
-            textStyle = MaterialTheme.typography.subtitle1.copy(color = textColor()),
+            textStyle = MaterialTheme.typography.subtitle1.copy(color = MapaTheme.textColor),
         )
     }
 }

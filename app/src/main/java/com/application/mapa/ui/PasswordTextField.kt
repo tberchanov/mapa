@@ -23,7 +23,7 @@ fun PasswordTextField(hint: String? = null, state: MutableState<TextFieldValue>)
             modifier = Modifier.fillMaxWidth(),
             value = textState.value,
             onValueChange = { textState.value = it },
-            textStyle = MaterialTheme.typography.subtitle1.copy(color = textColor()),
+            textStyle = MaterialTheme.typography.subtitle1.copy(color = MapaTheme.textColor),
             visualTransformation = when (passwordVisibility.value) {
                 true -> VisualTransformation.None
                 false -> PasswordVisualTransformation()

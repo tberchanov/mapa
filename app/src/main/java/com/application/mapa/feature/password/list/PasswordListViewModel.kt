@@ -8,7 +8,6 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.mapa.data.repository.PasswordRepository
-import com.application.mapa.di.DatabaseFactory
 import com.application.mapa.feature.password.list.model.PasswordListState
 import com.application.mapa.feature.password.list.model.SelectablePassword
 import kotlinx.coroutines.Dispatchers
@@ -18,8 +17,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class PasswordListViewModel @ViewModelInject constructor(
-    private val passwordRepository: PasswordRepository,
-    private val databaseFactory: DatabaseFactory
+    private val passwordRepository: PasswordRepository
 ) : ViewModel() {
 
     init {
@@ -97,9 +95,4 @@ class PasswordListViewModel @ViewModelInject constructor(
         state.passwords
             .filter { it.selected }
             .map { it.password.id }
-
-    override fun onCleared() {
-        databaseFactory.closeDatabase()
-        super.onCleared()
-    }
 }

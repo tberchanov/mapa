@@ -1,5 +1,6 @@
 package com.application.mapa.feature.password.master
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -9,15 +10,18 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerificationFailure
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerified
+import com.application.mapa.ui.white
 
 @Composable
 fun MasterPasswordScreen(
+    backgroundColor: Color,
     viewModel: MasterPasswordViewModel,
     navigateToPasswordList: () -> Unit,
     onUnlockClick: (String) -> Unit
@@ -44,7 +48,9 @@ fun MasterPasswordScreen(
     )
 
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = backgroundColor),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
