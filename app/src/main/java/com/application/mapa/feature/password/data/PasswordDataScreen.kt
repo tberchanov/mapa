@@ -38,7 +38,12 @@ fun PasswordDataScreen(
                     modifier = Modifier.preferredHeight(12.dp),
                     color = Color.Transparent
                 )
-                PasswordTextField(stringResource(R.string.value), passwordValue)
+                PasswordTextField(
+                    stringResource(R.string.value),
+                    passwordValue,
+                    copyButtonVisible = true,
+                    onCopyClicked = passwordDataViewModel::onCopyClicked
+                )
                 Divider(
                     modifier = Modifier.preferredHeight(12.dp),
                     color = Color.Transparent
