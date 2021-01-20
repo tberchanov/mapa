@@ -141,7 +141,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         activityProvider.clear()
-        databaseFactory.closeDatabase()
         super.onDestroy()
     }
 }

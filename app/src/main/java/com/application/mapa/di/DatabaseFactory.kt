@@ -14,6 +14,7 @@ class DatabaseFactory(
     private var database: AppDatabase? = null
 
     fun openDatabase(password: String) {
+        database?.close()
         database = AppDatabase.getInstance(
             password,
             context,
@@ -24,10 +25,5 @@ class DatabaseFactory(
     @Throws(IllegalStateException::class)
     fun getDatabase(): AppDatabase {
         return database ?: throw IllegalStateException("Database is not opened yet!")
-    }
-
-    fun closeDatabase() {
-        database?.close()
-        database = null
     }
 }
