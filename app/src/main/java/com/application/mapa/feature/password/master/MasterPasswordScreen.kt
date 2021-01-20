@@ -1,8 +1,8 @@
 package com.application.mapa.feature.password.master
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
+import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
@@ -10,18 +10,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerificationFailure
 import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerified
-import com.application.mapa.ui.white
 
 @Composable
 fun MasterPasswordScreen(
-    backgroundColor: Color,
     viewModel: MasterPasswordViewModel,
     navigateToPasswordList: () -> Unit,
     onUnlockClick: (String) -> Unit
@@ -47,27 +44,30 @@ fun MasterPasswordScreen(
         }
     )
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = backgroundColor),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        MasterPasswordTextField(
-            state = masterPasswordFieldState,
-            onValueChanged = {
-                masterPasswordFieldState.value = masterPasswordFieldState.value.copy(
-                    fieldValue = it
+    Scaffold(
+        bodyContent = {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+                MasterPasswordTextField(
+                    state = masterPasswordFieldState,
+                    onValueChanged = {
+                        masterPasswordFieldState.value = masterPasswordFieldState.value.copy(
+                            fieldValue = it
+                        )
+                    }
                 )
+                Spacer(modifier = Modifier.height(16.dp))
+                Button(onClick = { onUnlockClick(masterPasswordFieldState.value.fieldValue.text) }) {
+                    Text(text = stringResource(R.string.unlock))
+                }
+                Spacer(modifier = Modifier.height(50.dp))
             }
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-        Button(onClick = { onUnlockClick(masterPasswordFieldState.value.fieldValue.text) }) {
-            Text(text = stringResource(R.string.unlock))
         }
-        Spacer(modifier = Modifier.height(50.dp))
-    }
+    )
 }
 
 @Composable

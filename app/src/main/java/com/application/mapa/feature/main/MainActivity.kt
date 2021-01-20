@@ -66,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                     ) {
                         composable(MASTER_PASSWORD) {
                             MasterPasswordScreen(
-                                backgroundColor = MapaTheme.screenBackgroundColor,
                                 viewModel = masterPasswordViewModel,
                                 navigateToPasswordList = navActions.passwordList,
                                 onUnlockClick = {

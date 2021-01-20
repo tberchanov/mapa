@@ -31,18 +31,8 @@ onSurface = Color.Black,
 @Composable
 fun MapaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
     val colors = if (darkTheme) {
-        MapaTheme.run {
-            textColor = darkTextColor
-            dialogBackgroundColor = darkDialogBackgroundColor
-            screenBackgroundColor = black
-        }
         DarkColorPalette
     } else {
-        MapaTheme.run {
-            textColor = lightTextColor
-            dialogBackgroundColor = white
-            screenBackgroundColor = white
-        }
         LightColorPalette
     }
 
@@ -52,10 +42,4 @@ fun MapaTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable()
         shapes = shapes,
         content = content
     )
-}
-
-object MapaTheme {
-    var textColor: Color = lightTextColor
-    var dialogBackgroundColor = white
-    var screenBackgroundColor = white
 }

@@ -42,7 +42,6 @@ fun MasterPasswordTextField(
         value = state.value.fieldValue,
         onValueChange = { onValueChanged(it) },
         label = { Text(state.value.placeholder) },
-        textStyle = MaterialTheme.typography.subtitle1.copy(color = MapaTheme.textColor),
         visualTransformation = when (passwordVisibility.value) {
             true -> VisualTransformation.None
             false -> PasswordVisualTransformation()

@@ -28,7 +28,6 @@ fun EnterPasswordDialog(
         title = {
             Text(
                 text = stringResource(R.string.enter_master_password),
-                color = MapaTheme.textColor
             )
         },
         text = {
@@ -39,7 +38,6 @@ fun EnterPasswordDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(R.string.enter_password_dialog_description),
-                    color = MapaTheme.textColor
                 )
             }
         },
@@ -65,6 +63,5 @@ fun EnterPasswordDialog(
             }
         },
         properties = AndroidDialogProperties(securePolicy = SecureFlagPolicy.SecureOn),
-        backgroundColor = MapaTheme.dialogBackgroundColor
     )
 }

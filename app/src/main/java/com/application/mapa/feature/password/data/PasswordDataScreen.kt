@@ -25,29 +25,33 @@ fun PasswordDataScreen(
     ObservePasswordDataState(passwordDataViewModel, navigateUp)
 
     val password by passwordDataViewModel.getPassword(passwordId).observeAsState()
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-    ) {
-        val passwordName = mutableStateOf(TextFieldValue(password?.name ?: ""))
-        val passwordValue = mutableStateOf(TextFieldValue(password?.value ?: ""))
-        NameTextField(stringResource(R.string.name), passwordName)
-        Divider(
-            modifier = Modifier.preferredHeight(12.dp),
-            color = Color.Transparent
-        )
-        PasswordTextField(stringResource(R.string.value), passwordValue)
-        Divider(
-            modifier = Modifier.preferredHeight(12.dp),
-            color = Color.Transparent
-        )
-        SavePasswordButton(
-            onSavePasswordClick,
-            passwordId = password?.id ?: Password.UNDEFINED_ID,
-            passwordNameState = passwordName,
-            passwordValueState = passwordValue
-        )
-    }
+    Scaffold(
+        bodyContent = {
+            Column(
+                modifier = Modifier
+                    .padding(16.dp)
+            ) {
+                val passwordName = mutableStateOf(TextFieldValue(password?.name ?: ""))
+                val passwordValue = mutableStateOf(TextFieldValue(password?.value ?: ""))
+                NameTextField(stringResource(R.string.name), passwordName)
+                Divider(
+                    modifier = Modifier.preferredHeight(12.dp),
+                    color = Color.Transparent
+                )
+                PasswordTextField(stringResource(R.string.value), passwordValue)
+                Divider(
+                    modifier = Modifier.preferredHeight(12.dp),
+                    color = Color.Transparent
+                )
+                SavePasswordButton(
+                    onSavePasswordClick,
+                    passwordId = password?.id ?: Password.UNDEFINED_ID,
+                    passwordNameState = passwordName,
+                    passwordValueState = passwordValue
+                )
+            }
+        }
+    )
 }
 
 @Composable
@@ -59,7 +63,6 @@ fun NameTextField(hint: String, state: MutableState<TextFieldValue>) {
             modifier = Modifier.fillMaxWidth(),
             value = textState.value,
             onValueChange = { textState.value = it },
-            textStyle = MaterialTheme.typography.subtitle1.copy(color = MapaTheme.textColor),
         )
     }
 }

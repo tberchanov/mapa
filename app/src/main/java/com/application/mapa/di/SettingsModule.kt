@@ -35,8 +35,10 @@ class SettingsModule {
 
     @Provides
     fun provideInitSettingsUseCase(
+        @ApplicationContext
+        context: Context,
         settingsRepository: SettingsRepository
-    ) = InitSettingsUseCase(settingsRepository)
+    ) = InitSettingsUseCase(context, settingsRepository)
 
     @Provides
     fun provideSetDarkThemeUseCase(
