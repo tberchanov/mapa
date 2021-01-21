@@ -1,5 +1,6 @@
 package com.application.mapa.feature.password.master
 
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
@@ -46,7 +47,7 @@ fun MasterPasswordScreen(
 
     Scaffold(
         bodyContent = {
-            Column(
+            ScrollableColumn(
                 modifier = Modifier
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,

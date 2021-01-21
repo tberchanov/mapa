@@ -6,7 +6,7 @@ import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 
-class SettingsRepositoryImpl(
+class SettingsRepositoryPrefs(
     private val ciphertextRepository: CiphertextRepository,
     context: Context,
 ) : SettingsRepository {

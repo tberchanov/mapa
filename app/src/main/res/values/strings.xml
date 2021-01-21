@@ -13,4 +13,15 @@
     <string name="enter_password_dialog_description">If you will have entered incorrect password, fingerprint lock will work incorrectly.\nMake sure that password is correct.</string>
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="generate_password">Generate password</string>
+    <string name="password_generator">Password Generator</string>
+    <string name="generated_password">Generated password</string>
+    <string name="format_length">Length: %d</string>
+    <string name="generate">Generate</string>
+    <string name="apply">Apply</string>
+    <string name="upper_case_symbols">A-Z</string>
+    <string name="low_case_symbols">a-z</string>
+    <string name="special_symbols">!@#$%^*</string>
+    <string name="numbers">0–9</string>
+    <string name="no_generation_settings_selected_error">At least one setting should be enabled</string>
 </resources>

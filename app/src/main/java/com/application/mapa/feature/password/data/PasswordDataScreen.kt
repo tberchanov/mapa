@@ -3,7 +3,6 @@ package com.application.mapa.feature.password.data
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.*
 import androidx.compose.runtime.*
-import androidx.compose.runtime.State
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,8 +11,9 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
 import com.application.mapa.data.domain.model.Password
-import com.application.mapa.ui.MapaTheme
+import com.application.mapa.ui.BackIconButton
 import com.application.mapa.ui.PasswordTextField
+import com.application.mapa.ui.VectorIconButton
 
 @Composable
 fun PasswordDataScreen(
@@ -21,18 +21,43 @@ fun PasswordDataScreen(
     onSavePasswordClick: (Password) -> Unit,
     passwordDataViewModel: PasswordDataViewModel,
     navigateUp: () -> Unit,
+    generatePassword: (String) -> Unit,
 ) {
-    ObservePasswordDataState(passwordDataViewModel, navigateUp)
+    ObservePasswordSavingState(passwordDataViewModel, navigateUp)
 
-    val password by passwordDataViewModel.getPassword(passwordId).observeAsState()
+    val password by passwordDataViewModel.state.observeAsState()
+    remember(passwordId) {
+        passwordDataViewModel.loadPassword(passwordId)
+        true // stub, because remember cannot return Unit
+    }
+    val passwordName = mutableStateOf(TextFieldValue(password?.name ?: ""))
+    val passwordValue = mutableStateOf(TextFieldValue(password?.value ?: ""))
+
     Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {},
+                navigationIcon = {
+                    BackIconButton(navigateUp)
+                },
+                actions = {
+                    VectorIconButton(R.drawable.ic_check, onClick = {
+                        onSavePasswordClick(
+                            Password(
+                                id = password?.id ?: Password.UNDEFINED_ID,
+                                name = passwordName.value.text,
+                                value = passwordValue.value.text,
+                            )
+                        )
+                    })
+                }
+            )
+        },
         bodyContent = {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
             ) {
-                val passwordName = mutableStateOf(TextFieldValue(password?.name ?: ""))
-                val passwordValue = mutableStateOf(TextFieldValue(password?.value ?: ""))
                 NameTextField(stringResource(R.string.name), passwordName)
                 Divider(
                     modifier = Modifier.preferredHeight(12.dp),
@@ -48,12 +73,16 @@ fun PasswordDataScreen(
                     modifier = Modifier.preferredHeight(12.dp),
                     color = Color.Transparent
                 )
-                SavePasswordButton(
-                    onSavePasswordClick,
-                    passwordId = password?.id ?: Password.UNDEFINED_ID,
-                    passwordNameState = passwordName,
-                    passwordValueState = passwordValue
-                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = {
+                        generatePassword(passwordValue.value.text)
+                    }) {
+                        Text(text = stringResource(R.string.generate_password))
+                    }
+                }
             }
         }
     )
@@ -73,37 +102,11 @@ fun NameTextField(hint: String, state: MutableState<TextFieldValue>) {
 }
 
 @Composable
-fun SavePasswordButton(
-    onSavePasswordClick: (Password) -> Unit,
-    passwordId: Long,
-    passwordNameState: State<TextFieldValue>,
-    passwordValueState: State<TextFieldValue>,
-) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Spacer(modifier = Modifier.weight(1.0f))
-        TextButton(onClick = {
-            onSavePasswordClick(
-                Password(
-                    id = passwordId,
-                    name = passwordNameState.value.text,
-                    value = passwordValueState.value.text,
-                )
-            )
-        }) {
-            Text(text = stringResource(id = R.string.save))
-        }
-    }
-}
-
-@Composable
-private fun ObservePasswordDataState(
+private fun ObservePasswordSavingState(
     passwordDataViewModel: PasswordDataViewModel,
     navigateUp: () -> Unit
 ) {
-    passwordDataViewModel.state
+    passwordDataViewModel.savingState
         .observeAsState()
         .value
         ?.getContentIfNotHandled()
@@ -113,10 +116,3 @@ private fun ObservePasswordDataState(
             }
         }
 }
-
-/*
-@Preview
-@Composable
-fun PasswordDataScreenPreview() {
-    PasswordDataScreen(password = Password(1, "Gmail", "Qwert_123"), {})
-}*/

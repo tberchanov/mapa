@@ -3,7 +3,7 @@ package com.application.mapa.di
 import android.content.Context
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.settings.repository.SettingsRepository
-import com.application.mapa.feature.settings.repository.SettingsRepositoryImpl
+import com.application.mapa.feature.settings.repository.SettingsRepositoryPrefs
 import com.application.mapa.feature.settings.usecase.GetSettingsUseCase
 import com.application.mapa.feature.settings.usecase.InitSettingsUseCase
 import com.application.mapa.feature.settings.usecase.SetDarkThemeUseCase
@@ -24,7 +24,7 @@ class SettingsModule {
         ciphertextRepository: CiphertextRepository,
         @ApplicationContext
         context: Context
-    ): SettingsRepository = SettingsRepositoryImpl(ciphertextRepository, context)
+    ): SettingsRepository = SettingsRepositoryPrefs(ciphertextRepository, context)
 
     @Provides
     fun provideGetSettingsUseCase(

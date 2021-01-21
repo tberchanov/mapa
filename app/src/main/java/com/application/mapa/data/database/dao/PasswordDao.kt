@@ -17,7 +17,7 @@ interface PasswordDao {
     fun getAllPasswords(): List<Password>
 
     @Query("SELECT * FROM password WHERE :id = id")
-    fun getPassword(id: Long): Flow<Password?>
+    fun getPassword(id: Long): Password?
 
     @Query("SELECT * FROM password")
     fun observePasswords(): Flow<List<Password>>

@@ -11,6 +11,8 @@ import androidx.navigation.compose.*
 import com.application.mapa.di.DatabaseFactory
 import com.application.mapa.feature.password.data.PasswordDataScreen
 import com.application.mapa.feature.password.data.PasswordDataViewModel
+import com.application.mapa.feature.password.generator.PasswordGeneratorScreen
+import com.application.mapa.feature.password.generator.PasswordGeneratorViewModel
 import com.application.mapa.feature.password.list.PasswordListScreen
 import com.application.mapa.feature.password.list.PasswordListViewModel
 import com.application.mapa.feature.password.master.MasterPasswordScreen
@@ -21,7 +23,9 @@ import com.application.mapa.navigation.Destinations.CREATE_PASSWORD
 import com.application.mapa.navigation.Destinations.MASTER_PASSWORD
 import com.application.mapa.navigation.Destinations.PASSWORDS_LIST
 import com.application.mapa.navigation.Destinations.PASSWORD_DETAILS
+import com.application.mapa.navigation.Destinations.PASSWORD_GENERATOR
 import com.application.mapa.navigation.Destinations.PasswordDataArgs.PASSWORD_ID
+import com.application.mapa.navigation.Destinations.PasswordGeneratorArgs.CURRENT_PASSWORD
 import com.application.mapa.navigation.Destinations.SETTINGS
 import com.application.mapa.navigation.NavActions
 import com.application.mapa.ui.MapaTheme
@@ -46,6 +50,8 @@ class MainActivity : AppCompatActivity() {
     private val masterPasswordViewModel: MasterPasswordViewModel by viewModels()
 
     private val settingsViewModel: SettingsViewModel by viewModels()
+
+    private val passwordGeneratorViewModel: PasswordGeneratorViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -113,7 +119,8 @@ class MainActivity : AppCompatActivity() {
                                 null,
                                 { passwordDataViewModel.savePassword(it) },
                                 passwordDataViewModel,
-                                navActions.navigateUp
+                                navActions.navigateUp,
+                                navActions.passwordGenerator
                             )
                         }
                         composable(
@@ -124,13 +131,26 @@ class MainActivity : AppCompatActivity() {
                                 backStackEntry.arguments?.getLong(PASSWORD_ID) ?: -1,
                                 { passwordDataViewModel.savePassword(it) },
                                 passwordDataViewModel,
-                                navActions.navigateUp
+                                navActions.navigateUp,
+                                navActions.passwordGenerator
                             )
                         }
                         composable(SETTINGS) {
                             SettingsScreen(
                                 viewModel = settingsViewModel,
                                 onBackClicked = navActions.navigateUp
+                            )
+                        }
+                        composable(
+                            "$PASSWORD_GENERATOR/{$CURRENT_PASSWORD}",
+                            arguments = listOf(
+                                navArgument(CURRENT_PASSWORD) { type = NavType.StringType }
+                            )
+                        ) { backStackEntry ->
+                            PasswordGeneratorScreen(
+                                backStackEntry.arguments?.getString(CURRENT_PASSWORD),
+                                navActions.navigateUp,
+                                passwordGeneratorViewModel
                             )
                         }
                     }

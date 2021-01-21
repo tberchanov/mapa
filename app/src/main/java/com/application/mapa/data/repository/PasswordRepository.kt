@@ -9,7 +9,7 @@ interface PasswordRepository {
 
     suspend fun getPasswords(): List<Password>
 
-    fun getPassword(id: Long): Flow<Password>
+    suspend fun getPassword(id: Long): Password?
 
     suspend fun observePasswords(): Flow<List<Password>>
 
