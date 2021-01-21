@@ -52,10 +52,18 @@ fun PasswordGeneratorScreen(
                     onValueChange = { viewModel.postAction(ModifyGeneratedPassword(it)) },
                     label = { Text(text = stringResource(R.string.generated_password)) },
                 )
-                Text(
+                Row(
                     modifier = Modifier.padding(top = 12.dp),
-                    text = stringResource(R.string.settings)
-                )
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Divider(Modifier.weight(1f))
+                    Text(
+                        modifier = Modifier.padding(horizontal = 8.dp),
+                        text = stringResource(R.string.settings)
+                    )
+                    Divider(Modifier.weight(1f))
+                }
                 state?.settings?.forEach { setting ->
                     Row(
                         modifier = Modifier

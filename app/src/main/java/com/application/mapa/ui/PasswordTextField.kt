@@ -20,21 +20,26 @@ import com.application.mapa.R
 
 @Composable
 fun PasswordTextField(
+    text: String,
+    onValueChange: (String) -> Unit,
     hint: String? = null,
-    state: MutableState<TextFieldValue>,
     copyButtonVisible: Boolean = false,
-    onCopyClicked: (String) -> Unit = {}
+    onCopyClicked: (String) -> Unit = {},
+    isErrorValue: Boolean = false
 ) {
     val passwordVisibility = remember { mutableStateOf(false) }
     Column {
         if (hint != null) {
-            Text(hint)
+            if (isErrorValue) {
+                ErrorText(hint)
+            } else {
+                Text(hint)
+            }
         }
-        val textState = state
         TextField(
             modifier = Modifier.fillMaxWidth(),
-            value = textState.value,
-            onValueChange = { textState.value = it },
+            value = text,
+            onValueChange = onValueChange,
             visualTransformation = when (passwordVisibility.value) {
                 true -> VisualTransformation.None
                 false -> PasswordVisualTransformation()
@@ -43,14 +48,15 @@ fun PasswordTextField(
                 Row {
                     if (copyButtonVisible) {
                         IconButton(onClick = {
-                            onCopyClicked(textState.value.text)
+                            onCopyClicked(text)
                         }) {
                             Icon(imageVector = vectorResource(id = R.drawable.ic_copy))
                         }
                     }
                     PasswordVisibilityIcon(passwordVisibility)
                 }
-            }
+            },
+            isErrorValue = isErrorValue
         )
     }
 }

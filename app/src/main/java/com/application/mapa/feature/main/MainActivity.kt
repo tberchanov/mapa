@@ -117,7 +117,6 @@ class MainActivity : AppCompatActivity() {
                         composable(CREATE_PASSWORD) { backStackEntry ->
                             PasswordDataScreen(
                                 null,
-                                { passwordDataViewModel.savePassword(it) },
                                 passwordDataViewModel,
                                 navActions.navigateUp,
                                 navActions.passwordGenerator
@@ -129,7 +128,6 @@ class MainActivity : AppCompatActivity() {
                         ) { backStackEntry ->
                             PasswordDataScreen(
                                 backStackEntry.arguments?.getLong(PASSWORD_ID) ?: -1,
-                                { passwordDataViewModel.savePassword(it) },
                                 passwordDataViewModel,
                                 navActions.navigateUp,
                                 navActions.passwordGenerator

@@ -24,4 +24,6 @@
     <string name="special_symbols">!@#$%^*</string>
     <string name="numbers">0–9</string>
     <string name="no_generation_settings_selected_error">At least one setting should be enabled</string>
+    <string name="name_should_not_be_empty">Name should not be empty!</string>
+    <string name="password_should_not_be_empty">Password should not be empty!</string>
 </resources>
