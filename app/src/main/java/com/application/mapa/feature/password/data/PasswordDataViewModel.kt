@@ -54,17 +54,18 @@ class PasswordDataViewModel @ViewModelInject constructor(
     }
 
     private fun processLoadPasswordAction(action: LoadPassword) {
+        val generatedPassword = generatedPasswordDataHolder.popGeneratedPassword()
+
         val id = action.id
         if (id == null) {
             state.value = state.value?.copy(
-                password = Password(name = "", value = ""),
+                password = Password(name = "", value = generatedPassword ?: ""),
                 showValueError = false,
                 showNameError = false
             )
         } else {
             viewModelScope.launch(Dispatchers.IO) {
                 val password = passwordRepository.getPassword(id)?.let {
-                    val generatedPassword = generatedPasswordDataHolder.popGeneratedPassword()
                     if (generatedPassword != null) {
                         it.copy(value = generatedPassword)
                     } else {

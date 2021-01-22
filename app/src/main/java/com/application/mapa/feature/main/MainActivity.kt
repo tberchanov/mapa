@@ -7,12 +7,14 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.setContent
 import androidx.navigation.NavType
+import androidx.navigation.NavType.StringType
 import androidx.navigation.compose.*
 import com.application.mapa.di.DatabaseFactory
 import com.application.mapa.feature.password.data.PasswordDataScreen
 import com.application.mapa.feature.password.data.PasswordDataViewModel
 import com.application.mapa.feature.password.generator.PasswordGeneratorScreen
 import com.application.mapa.feature.password.generator.PasswordGeneratorViewModel
+import com.application.mapa.feature.password.generator.model.CurrentPasswordArg
 import com.application.mapa.feature.password.list.PasswordListScreen
 import com.application.mapa.feature.password.list.PasswordListViewModel
 import com.application.mapa.feature.password.master.MasterPasswordScreen
@@ -119,7 +121,7 @@ class MainActivity : AppCompatActivity() {
                                 null,
                                 passwordDataViewModel,
                                 navActions.navigateUp,
-                                navActions.passwordGenerator
+                                { navActions.passwordGenerator(CurrentPasswordArg(it)) }
                             )
                         }
                         composable(
@@ -130,7 +132,7 @@ class MainActivity : AppCompatActivity() {
                                 backStackEntry.arguments?.getLong(PASSWORD_ID) ?: -1,
                                 passwordDataViewModel,
                                 navActions.navigateUp,
-                                navActions.passwordGenerator
+                                { navActions.passwordGenerator(CurrentPasswordArg(it)) }
                             )
                         }
                         composable(SETTINGS) {
@@ -142,11 +144,15 @@ class MainActivity : AppCompatActivity() {
                         composable(
                             "$PASSWORD_GENERATOR/{$CURRENT_PASSWORD}",
                             arguments = listOf(
-                                navArgument(CURRENT_PASSWORD) { type = NavType.StringType }
+                                navArgument(CURRENT_PASSWORD) { type = StringType }
                             )
                         ) { backStackEntry ->
+                            val currentPasswordArg = backStackEntry
+                                .arguments
+                                ?.getString(CURRENT_PASSWORD)
+                                ?.let { CurrentPasswordArg.fromString(it) }
                             PasswordGeneratorScreen(
-                                backStackEntry.arguments?.getString(CURRENT_PASSWORD),
+                                currentPasswordArg,
                                 navActions.navigateUp,
                                 passwordGeneratorViewModel
                             )

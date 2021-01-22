@@ -12,16 +12,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.mapa.R
+import com.application.mapa.feature.password.generator.model.CurrentPasswordArg
 import com.application.mapa.feature.password.generator.model.PasswordGeneratorScreenAction.*
 import com.application.mapa.ui.BackIconButton
 
 @Composable
 fun PasswordGeneratorScreen(
-    currentPassword: String?,
+    currentPasswordArg: CurrentPasswordArg?,
     onBackClicked: () -> Unit,
     viewModel: PasswordGeneratorViewModel
 ) {
-    viewModel.postAction(ModifyGeneratedPassword(currentPassword ?: ""))
+    viewModel.postAction(
+        ModifyGeneratedPassword(currentPasswordArg?.currentPassword ?: "")
+    )
 
     Scaffold(
         topBar = {

@@ -2,6 +2,7 @@ package com.application.mapa.navigation
 
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.navigate
+import com.application.mapa.feature.password.generator.model.CurrentPasswordArg
 import com.application.mapa.navigation.Destinations.CREATE_PASSWORD
 import com.application.mapa.navigation.Destinations.PASSWORDS_LIST
 import com.application.mapa.navigation.Destinations.PASSWORD_DETAILS
@@ -41,7 +42,7 @@ class NavActions(navController: NavHostController) {
     val settings: () -> Unit = {
         navController.navigate(SETTINGS)
     }
-    val passwordGenerator: (String) -> Unit = { password ->
+    val passwordGenerator: (CurrentPasswordArg) -> Unit = { password ->
         navController.navigate("$PASSWORD_GENERATOR/$password")
     }
 }
