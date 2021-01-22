@@ -25,21 +25,27 @@ class PasswordDataViewModel @ViewModelInject constructor(
 
     val savingState = MutableLiveData<Event<PasswordDataState>>()
 
-    val state = MutableLiveData(
-        PasswordDataScreenState(
-            password = null,
-            showNameError = false,
-            showValueError = false
-        )
-    )
+    val state = MutableLiveData(getInitialState())
 
     fun postAction(action: PasswordDataScreenAction) = when (action) {
+        is CleanData -> processCleanDataAction()
         is LoadPassword -> processLoadPasswordAction(action)
         is SavePassword -> processSavePasswordAction()
         is CopyPassword -> processCopyPasswordAction()
         is ModifyPasswordName -> processModifyPasswordNameAction(action)
         is ModifyPasswordValue -> processModifyPasswordValueAction(action)
     }
+
+    private fun processCleanDataAction() {
+        state.value = getInitialState()
+    }
+
+    private fun getInitialState() =
+        PasswordDataScreenState(
+            password = null,
+            showNameError = false,
+            showValueError = false
+        )
 
     private fun processModifyPasswordNameAction(action: ModifyPasswordName) {
         state.value = state.value?.run {
@@ -65,7 +71,11 @@ class PasswordDataViewModel @ViewModelInject constructor(
             )
         } else {
             viewModelScope.launch(Dispatchers.IO) {
-                val password = passwordRepository.getPassword(id)?.let {
+                val password = if (state.value?.password?.id == id) {
+                    state.value?.password
+                } else {
+                    passwordRepository.getPassword(id)
+                }?.let {
                     if (generatedPassword != null) {
                         it.copy(value = generatedPassword)
                     } else {

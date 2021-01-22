@@ -8,56 +8,50 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.res.stringResource
-import androidx.ui.tooling.preview.Preview
 import com.application.mapa.R
-import com.application.mapa.data.domain.model.Password
-import com.application.mapa.feature.password.list.model.SelectablePassword
-
-@Preview
-@Composable
-fun PasswordListScreenPreview() {
-    PasswordListScreen(
-        passwords = listOf(
-            SelectablePassword(Password(1, "Name", "Value"), false),
-            SelectablePassword(Password(2, "Name2", "Value2"), false),
-            SelectablePassword(Password(3, "Name3", "Value3"), false)
-        ),
-        selectionEnabled = true
-    )
-}
 
 @Composable
 fun PasswordListScreen(
-    passwords: List<SelectablePassword>,
+    viewModel: PasswordListViewModel,
     onCreatePasswordClick: () -> Unit = {},
-    onDeletePasswordsClick: () -> Unit = {},
-    onPasswordClick: (SelectablePassword) -> Unit = {},
-    onPasswordLongClick: (SelectablePassword) -> Unit = {},
-    onPasswordChecked: (SelectablePassword) -> Unit = {},
-    onCloseClicked: () -> Unit = {},
     onSettingsClicked: () -> Unit = {},
-    selectionEnabled: Boolean
+    passwordDetails: (Long) -> Unit
 ) {
+    val selectionEnabled = viewModel.state.selectionEnabled
     Scaffold(
         topBar = {
             PasswordListTopBar(
                 selectionEnabled,
-                onCloseClicked,
+                onCloseClicked = { viewModel.disableSelection() },
                 onSettingsClicked
             )
         },
         floatingActionButton = {
-            PasswordListButton(selectionEnabled, onCreatePasswordClick, onDeletePasswordsClick)
+            PasswordListButton(
+                selectionEnabled,
+                onCreatePasswordClick,
+                onDeletePasswordsClick = { viewModel.deleteSelectedPasswords() }
+            )
         },
         bodyContent = {
             LazyColumn {
-                items(passwords) { password ->
+                items(viewModel.state.passwords) { password ->
                     PasswordItem(
                         password,
                         selectionEnabled,
-                        onPasswordClick,
-                        onPasswordLongClick,
-                        onPasswordChecked
+                        onPasswordClick = {
+                            if (viewModel.state.selectionEnabled) {
+                                viewModel.selectPassword(it)
+                            } else {
+                                passwordDetails(it.password.id)
+                            }
+                        },
+                        onPasswordLongClick = {
+                            viewModel.selectPassword(it)
+                        },
+                        onPasswordChecked = {
+                            viewModel.selectPassword(it)
+                        }
                     )
                 }
             }

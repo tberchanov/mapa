@@ -7,7 +7,7 @@ class PasswordManager {
     private val letters: String = "abcdefghijklmnopqrstuvwxyz"
     private val uppercaseLetters: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
     private val numbers: String = "0123456789"
-    private val special: String = "@#=+!£$%&?"
+    private val special: String = "@#=+!£$&?"
     private val maxPasswordFactor: Float = 10F //Max password factor based on chars inside password
     //  see evaluatePassword function below
 

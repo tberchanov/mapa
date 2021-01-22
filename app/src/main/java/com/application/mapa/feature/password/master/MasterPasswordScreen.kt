@@ -1,7 +1,10 @@
 package com.application.mapa.feature.password.master
 
 import androidx.compose.foundation.ScrollableColumn
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -21,8 +24,7 @@ import com.application.mapa.feature.password.master.PasswordVerificationState.Pa
 @Composable
 fun MasterPasswordScreen(
     viewModel: MasterPasswordViewModel,
-    navigateToPasswordList: () -> Unit,
-    onUnlockClick: (String) -> Unit
+    navigateToPasswordList: () -> Unit
 ) {
     val masterPasswordFieldHint = stringResource(R.string.master_password_hint)
     val masterPasswordFieldState = remember {
@@ -62,7 +64,11 @@ fun MasterPasswordScreen(
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = { onUnlockClick(masterPasswordFieldState.value.fieldValue.text) }) {
+                Button(onClick = {
+                    viewModel.verifyMasterPassword(
+                        masterPasswordFieldState.value.fieldValue.text
+                    )
+                }) {
                     Text(text = stringResource(R.string.unlock))
                 }
                 Spacer(modifier = Modifier.height(50.dp))
