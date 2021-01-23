@@ -1,6 +1,7 @@
 package com.application.mapa.feature.password.generator
 
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.application.mapa.feature.password.generator.model.PasswordGeneratorScreenAction
@@ -11,14 +12,20 @@ import com.application.mapa.feature.password.generator.usecase.GeneratePasswordU
 import com.application.mapa.feature.password.generator.usecase.GeneratePasswordUseCase.Params
 import com.application.mapa.feature.password.generator.usecase.GetPasswordLengthRangeUseCase
 
-class PasswordGeneratorViewModel @ViewModelInject constructor(
+interface PasswordGeneratorViewModel {
+    val state: LiveData<PasswordGeneratorScreenState>
+    fun postAction(action: PasswordGeneratorScreenAction)
+    fun getPasswordLengthRange(): ClosedFloatingPointRange<Float>
+}
+
+class PasswordGeneratorViewModelImpl @ViewModelInject constructor(
     private val passwordGenerationSettingsRepository: PasswordGenerationSettingsRepository,
     private val getPasswordLengthRangeUseCase: GetPasswordLengthRangeUseCase,
     private val generatePasswordUseCase: GeneratePasswordUseCase,
     private val generatedPasswordDataHolder: GeneratedPasswordDataHolder
-) : ViewModel() {
+) : ViewModel(), PasswordGeneratorViewModel {
 
-    val state = MutableLiveData(
+    override val state = MutableLiveData(
         PasswordGeneratorScreenState(
             "",
             passwordGenerationSettingsRepository.getSettings(),
@@ -27,7 +34,7 @@ class PasswordGeneratorViewModel @ViewModelInject constructor(
         )
     )
 
-    fun postAction(action: PasswordGeneratorScreenAction): Unit = when (action) {
+    override fun postAction(action: PasswordGeneratorScreenAction): Unit = when (action) {
         is ModifyGeneratedPassword -> processModifyGeneratedPasswordAction(action)
         is ModifyGenerationSetting -> processModifyGenerationSettingAction(action)
         is ModifyPasswordLength -> processModifyPasswordLengthAction(action)
@@ -84,5 +91,5 @@ class PasswordGeneratorViewModel @ViewModelInject constructor(
         }
     }
 
-    fun getPasswordLengthRange() = getPasswordLengthRangeUseCase.execute()
+    override fun getPasswordLengthRange() = getPasswordLengthRangeUseCase.execute()
 }

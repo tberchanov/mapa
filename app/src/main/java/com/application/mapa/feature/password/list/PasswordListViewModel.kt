@@ -16,15 +16,22 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class PasswordListViewModel @ViewModelInject constructor(
+interface PasswordListViewModel {
+    val state: PasswordListState
+    fun selectPassword(selectablePassword: SelectablePassword)
+    fun disableSelection()
+    fun deleteSelectedPasswords()
+}
+
+class PasswordListViewModelImpl @ViewModelInject constructor(
     private val passwordRepository: PasswordRepository
-) : ViewModel() {
+) : ViewModel(), PasswordListViewModel {
 
     init {
         observePasswords()
     }
 
-    var state by mutableStateOf(
+    override var state by mutableStateOf(
         PasswordListState(
             passwords = emptyList(),
             selectionEnabled = false
@@ -41,7 +48,6 @@ class PasswordListViewModel @ViewModelInject constructor(
                     }
                 }
                 .collect {
-                    Log.e("PasswordListViewModel", "collect: $it")
                     withContext(Dispatchers.Main) {
                         state = state.copy(passwords = it)
                     }
@@ -49,7 +55,7 @@ class PasswordListViewModel @ViewModelInject constructor(
         }
     }
 
-    fun selectPassword(selectablePassword: SelectablePassword) {
+    override fun selectPassword(selectablePassword: SelectablePassword) {
         val passwords = selectPasswordInList(state.passwords, selectablePassword)
         val selectedPasswordQuantity = passwords.count { it.selected }
         state = state.copy(
@@ -75,14 +81,14 @@ class PasswordListViewModel @ViewModelInject constructor(
             }
     }
 
-    fun disableSelection() {
+    override fun disableSelection() {
         state = state.copy(
             passwords = state.passwords.map { it.copy(selected = false) },
             selectionEnabled = false
         )
     }
 
-    fun deleteSelectedPasswords() {
+    override fun deleteSelectedPasswords() {
         viewModelScope.launch(Dispatchers.IO) {
             passwordRepository.deletePasswords(getSelectedPasswordsIds())
             withContext(Dispatchers.Main) {

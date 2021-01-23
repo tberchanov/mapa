@@ -1,6 +1,7 @@
 package com.application.mapa.feature.password.data
 
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,18 +17,24 @@ import com.application.mapa.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class PasswordDataViewModel @ViewModelInject constructor(
+interface PasswordDataViewModel {
+    val savingState: LiveData<Event<PasswordDataState>>
+    val state: LiveData<PasswordDataScreenState>
+    fun postAction(action: PasswordDataScreenAction)
+}
+
+class PasswordDataViewModelImpl @ViewModelInject constructor(
     private val passwordRepository: PasswordRepository,
     private val saveTextToClipboardUseCase: SaveTextToClipboardUseCase,
     private val vibrationUseCase: VibrationUseCase,
     private val generatedPasswordDataHolder: GeneratedPasswordDataHolder
-) : ViewModel() {
+) : ViewModel(), PasswordDataViewModel {
 
-    val savingState = MutableLiveData<Event<PasswordDataState>>()
+    override val savingState = MutableLiveData<Event<PasswordDataState>>()
 
-    val state = MutableLiveData(getInitialState())
+    override val state = MutableLiveData(getInitialState())
 
-    fun postAction(action: PasswordDataScreenAction) = when (action) {
+    override fun postAction(action: PasswordDataScreenAction) = when (action) {
         is CleanData -> processCleanDataAction()
         is LoadPassword -> processLoadPasswordAction(action)
         is SavePassword -> processSavePasswordAction()

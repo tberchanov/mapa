@@ -7,6 +7,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.setContent
 import androidx.navigation.compose.rememberNavController
 import com.application.mapa.feature.settings.SettingsViewModel
+import com.application.mapa.feature.settings.SettingsViewModelImpl
 import com.application.mapa.navigation.MainNavHost
 import com.application.mapa.navigation.NavActions
 import com.application.mapa.ui.MapaTheme
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             val navController = rememberNavController()
             val navActions = remember(navController) { NavActions(navController) }
 
-            val settingsViewModel: SettingsViewModel = viewModelProvider.provideViewModel(this)
+            val settingsViewModel: SettingsViewModel = viewModelProvider.provideViewModel<SettingsViewModelImpl>(this)
             val darkThemeEnabledState = settingsViewModel.darkThemeEnabled.observeAsState()
             darkThemeEnabledState.value?.let { darkThemeEnabled ->
                 MapaTheme(

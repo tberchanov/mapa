@@ -9,12 +9,17 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import com.application.mapa.feature.main.ViewModelProvider
 import com.application.mapa.feature.password.data.PasswordDataScreen
+import com.application.mapa.feature.password.data.PasswordDataViewModelImpl
 import com.application.mapa.feature.password.generator.PasswordGeneratorScreen
+import com.application.mapa.feature.password.generator.PasswordGeneratorViewModelImpl
 import com.application.mapa.feature.password.generator.model.CurrentPasswordArg
 import com.application.mapa.feature.password.list.PasswordListScreen
 import com.application.mapa.feature.password.list.PasswordListViewModel
+import com.application.mapa.feature.password.list.PasswordListViewModelImpl
 import com.application.mapa.feature.password.master.MasterPasswordScreen
+import com.application.mapa.feature.password.master.MasterPasswordViewModelImpl
 import com.application.mapa.feature.settings.SettingsScreen
+import com.application.mapa.feature.settings.SettingsViewModelImpl
 import com.application.mapa.util.ActivityProvider
 import com.application.mapa.util.ObserveOnBackPressed
 
@@ -33,13 +38,13 @@ fun MainNavHost(
         ) {
             composable(Destinations.MASTER_PASSWORD) {
                 MasterPasswordScreen(
-                    viewModel = viewModelProvider.provideViewModel(activity),
+                    viewModel = viewModelProvider.provideViewModel<MasterPasswordViewModelImpl>(activity),
                     navigateToPasswordList = navActions.passwordList,
                 )
             }
             composable(Destinations.PASSWORDS_LIST) {
                 val passwordListViewModel: PasswordListViewModel =
-                    viewModelProvider.provideViewModel(activity)
+                    viewModelProvider.provideViewModel<PasswordListViewModelImpl>(activity)
 
                 activityProvider.getActivity()
                     ?.ObserveOnBackPressed(Destinations.PASSWORDS_LIST, navController) {
@@ -60,7 +65,7 @@ fun MainNavHost(
             composable(Destinations.CREATE_PASSWORD) {
                 PasswordDataScreen(
                     null,
-                    viewModelProvider.provideViewModel(activity),
+                    viewModelProvider.provideViewModel<PasswordDataViewModelImpl>(activity),
                     navActions.navigateUp,
                     { navActions.passwordGenerator(CurrentPasswordArg(it)) }
                 )
@@ -74,14 +79,14 @@ fun MainNavHost(
                 PasswordDataScreen(
                     backStackEntry.arguments?.getLong(Destinations.PasswordDataArgs.PASSWORD_ID)
                         ?: -1,
-                    viewModelProvider.provideViewModel(activity),
+                    viewModelProvider.provideViewModel<PasswordDataViewModelImpl>(activity),
                     navActions.navigateUp,
                     { navActions.passwordGenerator(CurrentPasswordArg(it)) }
                 )
             }
             composable(Destinations.SETTINGS) {
                 SettingsScreen(
-                    viewModel = viewModelProvider.provideViewModel(activity),
+                    viewModel = viewModelProvider.provideViewModel<SettingsViewModelImpl>(activity),
                     onBackClicked = navActions.navigateUp
                 )
             }
@@ -100,7 +105,7 @@ fun MainNavHost(
                 PasswordGeneratorScreen(
                     currentPasswordArg,
                     navActions.navigateUp,
-                    viewModelProvider.provideViewModel(activity)
+                    viewModelProvider.provideViewModel<PasswordGeneratorViewModelImpl>(activity)
                 )
             }
         }
