@@ -6,21 +6,23 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.mapa.di.DatabaseFactory
+import com.application.mapa.feature.check.root.CheckRootUseCase
 import com.application.mapa.feature.encryption.database.Encryptor
 import com.application.mapa.feature.encryption.database.KeyGenerator
 import com.application.mapa.feature.encryption.database.storable.StorableManager
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.fingerprint.usecase.DecryptDataFromStorageUseCase
 import com.application.mapa.feature.fingerprint.usecase.ShowBiometricPromptForDecryptionUseCase
-import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerificationFailure
-import com.application.mapa.feature.password.master.PasswordVerificationState.PasswordVerified
+import com.application.mapa.feature.password.master.model.MasterPasswordScreenState
+import com.application.mapa.feature.password.master.model.PasswordVerificationState.PasswordVerificationFailure
+import com.application.mapa.feature.password.master.model.PasswordVerificationState.PasswordVerified
 import com.application.mapa.util.ActivityProvider
 import com.application.mapa.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 interface MasterPasswordViewModel {
-    val verificationState: LiveData<Event<PasswordVerificationState>>
+    val state: LiveData<MasterPasswordScreenState>
     fun verifyMasterPassword(password: String)
 }
 
@@ -32,12 +34,19 @@ class MasterPasswordViewModelImpl @ViewModelInject constructor(
     ciphertextRepository: CiphertextRepository,
     private val showBiometricPromptForDecryptionUseCase: ShowBiometricPromptForDecryptionUseCase,
     private val activityProvider: ActivityProvider,
-    private val decryptDataFromStorageUseCase: DecryptDataFromStorageUseCase
+    private val decryptDataFromStorageUseCase: DecryptDataFromStorageUseCase,
+    private val checkRootUseCase: CheckRootUseCase
 ) : ViewModel(), MasterPasswordViewModel {
 
-    override val verificationState = MutableLiveData<Event<PasswordVerificationState>>()
+    override val state = MutableLiveData(MasterPasswordScreenState(false, null))
 
     init {
+        viewModelScope.launch {
+            state.postValue(
+                state.value?.copy(showRootError = checkRootUseCase.execute())
+            )
+        }
+
         if (ciphertextRepository.hasCiphertextSaved()) {
             verifyBiometricLock()
         }
@@ -61,9 +70,15 @@ class MasterPasswordViewModelImpl @ViewModelInject constructor(
                 }
                 databaseFactory.openDatabase(password)
             }.fold(
-                onSuccess = { verificationState.postValue(Event(PasswordVerified)) },
+                onSuccess = {
+                    state.postValue(
+                        state.value?.copy(verificationState = Event(PasswordVerified))
+                    )
+                },
                 onFailure = {
-                    verificationState.postValue(Event(PasswordVerificationFailure))
+                    state.postValue(
+                        state.value?.copy(verificationState = Event(PasswordVerificationFailure))
+                    )
                 }
             )
         }

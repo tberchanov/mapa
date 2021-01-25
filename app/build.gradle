@@ -85,4 +85,7 @@ dependencies {
 
     // SqlCipher
     implementation "net.zetetic:android-database-sqlcipher:$versions.sql_cipher"
+
+    // Root check
+    implementation "com.scottyab:rootbeer-lib:$versions.rootbeer"
 }

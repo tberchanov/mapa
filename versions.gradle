@@ -36,4 +36,5 @@ ext.versions = [
         sql_cipher           : "4.4.0@aar",
         biometric            : "1.0.1",
         security             : "1.1.0-alpha03",
+        rootbeer             : "0.0.8"
 ]
