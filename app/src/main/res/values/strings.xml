@@ -27,4 +27,5 @@
     <string name="name_should_not_be_empty">Name should not be empty!</string>
     <string name="password_should_not_be_empty">Password should not be empty!</string>
     <string name="root_risk_message">Device is under the root risk!</string>
+    <string name="root_risk_message_description">Your private data can be compromised. Please, check you smartphone and solve the issue. Or migrate all passwords from this application to another storage and remove them from here.</string>
 </resources>

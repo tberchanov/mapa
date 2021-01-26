@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.AndroidDialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
 import com.application.mapa.R
-import com.application.mapa.ui.PasswordTextField
+import com.application.mapa.ui.components.PasswordTextField
 
 @Composable
 fun EnterPasswordDialog(

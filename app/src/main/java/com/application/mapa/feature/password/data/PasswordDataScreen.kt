@@ -12,10 +12,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.mapa.R
 import com.application.mapa.feature.password.data.model.PasswordDataScreenAction.*
-import com.application.mapa.ui.BackIconButton
-import com.application.mapa.ui.ErrorText
-import com.application.mapa.ui.PasswordTextField
-import com.application.mapa.ui.VectorIconButton
+import com.application.mapa.ui.components.BackIconButton
+import com.application.mapa.ui.components.ErrorText
+import com.application.mapa.ui.components.PasswordTextField
+import com.application.mapa.ui.components.VectorIconButton
 
 @Composable
 fun PasswordDataScreen(
@@ -41,9 +41,12 @@ fun PasswordDataScreen(
                     BackIconButton(navigateUp)
                 },
                 actions = {
-                    VectorIconButton(R.drawable.ic_check, onClick = {
-                        viewModel.postAction(SavePassword)
-                    })
+                    val checkButtonEnabled = state?.checkButtonEnabled ?: false
+                    VectorIconButton(
+                        if (checkButtonEnabled) R.drawable.ic_check else R.drawable.ic_check_disabled,
+                        onClick = { viewModel.postAction(SavePassword) },
+                        enabled = checkButtonEnabled
+                    )
                 }
             )
         },

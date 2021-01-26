@@ -1,4 +1,4 @@
-package com.application.mapa.ui
+package com.application.mapa.ui.components
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text

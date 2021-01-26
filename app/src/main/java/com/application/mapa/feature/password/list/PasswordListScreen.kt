@@ -1,14 +1,24 @@
 package com.application.mapa.feature.password.list
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import com.application.mapa.R
+import com.application.mapa.feature.password.list.model.SelectablePassword
+import com.application.mapa.ui.components.ErrorMessage
 
 @Composable
 fun PasswordListScreen(
@@ -17,7 +27,8 @@ fun PasswordListScreen(
     onSettingsClicked: () -> Unit = {},
     passwordDetails: (Long) -> Unit
 ) {
-    val selectionEnabled = viewModel.state.selectionEnabled
+    val state by viewModel.state.observeAsState()
+    val selectionEnabled = state?.selectionEnabled ?: false
     Scaffold(
         topBar = {
             PasswordListTopBar(
@@ -34,29 +45,61 @@ fun PasswordListScreen(
             )
         },
         bodyContent = {
-            LazyColumn {
-                items(viewModel.state.passwords) { password ->
-                    PasswordItem(
-                        password,
+            state?.run {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    if (showRootError) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        ErrorMessage(
+                            stringResource(R.string.root_risk_message),
+                            stringResource(R.string.root_risk_message_description)
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                    PasswordsList(
+                        passwords,
                         selectionEnabled,
-                        onPasswordClick = {
-                            if (viewModel.state.selectionEnabled) {
-                                viewModel.selectPassword(it)
-                            } else {
-                                passwordDetails(it.password.id)
-                            }
-                        },
-                        onPasswordLongClick = {
-                            viewModel.selectPassword(it)
-                        },
-                        onPasswordChecked = {
-                            viewModel.selectPassword(it)
-                        }
+                        onPasswordSelected = viewModel::selectPassword,
+                        passwordDetails = passwordDetails,
                     )
                 }
             }
         }
     )
+}
+
+@Composable
+private fun PasswordsList(
+    passwords: List<SelectablePassword>,
+    selectionEnabled: Boolean,
+    onPasswordSelected: (SelectablePassword) -> Unit,
+    passwordDetails: (Long) -> Unit
+) {
+    LazyColumn {
+        items(passwords) { password ->
+            PasswordItem(
+                password,
+                selectionEnabled,
+                onPasswordClick = {
+                    if (selectionEnabled) {
+                        onPasswordSelected(it)
+                    } else {
+                        passwordDetails(it.password.id)
+                    }
+                },
+                onPasswordLongClick = {
+                    onPasswordSelected(it)
+                },
+                onPasswordChecked = {
+                    onPasswordSelected(it)
+                }
+            )
+        }
+        item {
+            Spacer(modifier = Modifier.height(80.dp))
+        }
+    }
 }
 
 @Composable

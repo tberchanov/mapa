@@ -5,5 +5,6 @@ import com.application.mapa.data.domain.model.Password
 data class PasswordDataScreenState(
     val password: Password?,
     val showNameError: Boolean,
-    val showValueError: Boolean
+    val showValueError: Boolean,
+    val checkButtonEnabled: Boolean
 )

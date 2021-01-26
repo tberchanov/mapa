@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.application.mapa.data.domain.model.Password
 import com.application.mapa.data.repository.PasswordRepository
+import com.application.mapa.feature.check.root.CheckRootUseCase
 import com.application.mapa.feature.password.data.model.PasswordDataScreenAction
 import com.application.mapa.feature.password.data.model.PasswordDataScreenAction.*
 import com.application.mapa.feature.password.data.model.PasswordDataScreenState
@@ -27,12 +28,21 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
     private val passwordRepository: PasswordRepository,
     private val saveTextToClipboardUseCase: SaveTextToClipboardUseCase,
     private val vibrationUseCase: VibrationUseCase,
-    private val generatedPasswordDataHolder: GeneratedPasswordDataHolder
+    private val generatedPasswordDataHolder: GeneratedPasswordDataHolder,
+    private val checkRootUseCase: CheckRootUseCase
 ) : ViewModel(), PasswordDataViewModel {
 
     override val savingState = MutableLiveData<Event<PasswordDataState>>()
 
     override val state = MutableLiveData(getInitialState())
+
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            state.postValue(
+                state.value?.copy(checkButtonEnabled = !checkRootUseCase.execute())
+            )
+        }
+    }
 
     override fun postAction(action: PasswordDataScreenAction) = when (action) {
         is CleanData -> processCleanDataAction()
@@ -51,7 +61,8 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
         PasswordDataScreenState(
             password = null,
             showNameError = false,
-            showValueError = false
+            showValueError = false,
+            checkButtonEnabled = false
         )
 
     private fun processModifyPasswordNameAction(action: ModifyPasswordName) {

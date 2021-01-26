@@ -41,7 +41,7 @@ class MasterPasswordViewModelImpl @ViewModelInject constructor(
     override val state = MutableLiveData(MasterPasswordScreenState(false, null))
 
     init {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             state.postValue(
                 state.value?.copy(showRootError = checkRootUseCase.execute())
             )

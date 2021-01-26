@@ -48,7 +48,7 @@ fun MainNavHost(
 
                 activityProvider.getActivity()
                     ?.ObserveOnBackPressed(Destinations.PASSWORDS_LIST, navController) {
-                        if (passwordListViewModel.state.selectionEnabled) {
+                        if (passwordListViewModel.state.value?.selectionEnabled == true) {
                             passwordListViewModel.disableSelection()
                         } else {
                             activityProvider.getActivity()?.finish()

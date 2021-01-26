@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.sp
 import com.application.mapa.R
 import com.application.mapa.feature.password.generator.model.CurrentPasswordArg
 import com.application.mapa.feature.password.generator.model.PasswordGeneratorScreenAction.*
-import com.application.mapa.ui.BackIconButton
+import com.application.mapa.ui.components.BackIconButton
 
 @Composable
 fun PasswordGeneratorScreen(

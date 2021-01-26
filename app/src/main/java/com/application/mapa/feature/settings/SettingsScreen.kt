@@ -13,7 +13,7 @@ import com.application.mapa.feature.settings.model.SettingsAction.EnterPasswordD
 import com.application.mapa.feature.settings.model.SettingsAction.EnterPasswordDialogConfirm
 import com.application.mapa.feature.settings.ui.EnterPasswordDialog
 import com.application.mapa.feature.settings.ui.SettingItem
-import com.application.mapa.ui.BackIconButton
+import com.application.mapa.ui.components.BackIconButton
 
 @Composable
 fun SettingsScreen(

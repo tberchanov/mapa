@@ -1,4 +1,4 @@
-package com.application.mapa.ui
+package com.application.mapa.ui.components
 
 import androidx.compose.runtime.Composable
 import com.application.mapa.R

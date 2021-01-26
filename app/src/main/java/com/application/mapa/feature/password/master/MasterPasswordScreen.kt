@@ -2,7 +2,6 @@ package com.application.mapa.feature.password.master
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -18,6 +17,7 @@ import com.application.mapa.R
 import com.application.mapa.feature.password.master.model.PasswordVerificationState
 import com.application.mapa.feature.password.master.model.PasswordVerificationState.PasswordVerificationFailure
 import com.application.mapa.feature.password.master.model.PasswordVerificationState.PasswordVerified
+import com.application.mapa.ui.components.ErrorMessage
 import com.application.mapa.util.Event
 
 @Composable
@@ -75,25 +75,16 @@ fun MasterPasswordScreen(
 
                 if (state?.showRootError == true) {
                     Spacer(modifier = Modifier.height(8.dp))
-                    ErrorMessage(stringResource(R.string.root_risk_message))
+                    ErrorMessage(
+                        stringResource(R.string.root_risk_message),
+                        stringResource(R.string.root_risk_message_description)
+                    )
                 }
 
                 Spacer(modifier = Modifier.height(50.dp))
             }
         }
     )
-}
-
-@Composable
-fun ErrorMessage(
-    message: String
-) {
-    Card(
-        shape = RoundedCornerShape(14.dp),
-        backgroundColor = MaterialTheme.colors.error
-    ) {
-        Text(modifier = Modifier.padding(8.dp), text = message)
-    }
 }
 
 @Composable
