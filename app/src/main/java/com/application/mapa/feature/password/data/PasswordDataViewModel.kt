@@ -17,6 +17,7 @@ import com.application.mapa.feature.password.generator.GeneratedPasswordDataHold
 import com.application.mapa.util.Event
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 interface PasswordDataViewModel {
     val savingState: LiveData<Event<PasswordDataState>>
@@ -38,14 +39,15 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            state.postValue(
-                state.value?.copy(checkButtonEnabled = !checkRootUseCase.execute())
-            )
+            val isRooted = checkRootUseCase.execute()
+            withContext(Dispatchers.Main) {
+                state.value = state.value?.copy(checkButtonEnabled = !isRooted)
+            }
         }
     }
 
     override fun postAction(action: PasswordDataScreenAction) = when (action) {
-        is CleanData -> processCleanDataAction()
+        is CleanData -> processCleanDataAction(action)
         is LoadPassword -> processLoadPasswordAction(action)
         is SavePassword -> processSavePasswordAction()
         is CopyPassword -> processCopyPasswordAction()
@@ -53,8 +55,10 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
         is ModifyPasswordValue -> processModifyPasswordValueAction(action)
     }
 
-    private fun processCleanDataAction() {
-        state.value = getInitialState()
+    private fun processCleanDataAction(action: CleanData) {
+        if (state.value?.password?.id != action.id) {
+            state.value = getInitialState()
+        }
     }
 
     private fun getInitialState() =

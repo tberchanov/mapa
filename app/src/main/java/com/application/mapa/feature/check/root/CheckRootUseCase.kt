@@ -15,7 +15,6 @@ class CheckRootUseCase(
     }
 
     suspend fun execute() = withContext(Dispatchers.IO) {
-        true
-//        rootBeer.isRooted
+        rootBeer.isRooted
     }
 }

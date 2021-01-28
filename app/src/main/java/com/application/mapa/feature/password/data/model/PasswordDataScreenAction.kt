@@ -1,7 +1,7 @@
 package com.application.mapa.feature.password.data.model
 
 sealed class PasswordDataScreenAction {
-    object CleanData : PasswordDataScreenAction()
+    class CleanData(val id: Long?) : PasswordDataScreenAction()
     class LoadPassword(val id: Long?) : PasswordDataScreenAction()
     object SavePassword : PasswordDataScreenAction()
     object CopyPassword : PasswordDataScreenAction()
