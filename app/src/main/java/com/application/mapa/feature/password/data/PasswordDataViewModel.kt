@@ -15,6 +15,7 @@ import com.application.mapa.feature.password.data.usecase.SaveTextToClipboardUse
 import com.application.mapa.feature.password.data.usecase.VibrationUseCase
 import com.application.mapa.feature.password.generator.GeneratedPasswordDataHolder
 import com.application.mapa.util.Event
+import com.application.mapa.util.LogLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -35,7 +36,7 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
 
     override val savingState = MutableLiveData<Event<PasswordDataState>>()
 
-    override val state = MutableLiveData(getInitialState())
+    override val state = LogLiveData("PasswordDataScreen", getInitialState())
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -57,7 +58,11 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
 
     private fun processCleanDataAction(action: CleanData) {
         if (state.value?.password?.id != action.id) {
-            state.value = getInitialState()
+            state.value = state.value?.copy(
+                password = null,
+                showNameError = false,
+                showValueError = false
+            )
         }
     }
 
@@ -87,7 +92,11 @@ class PasswordDataViewModelImpl @ViewModelInject constructor(
         val id = action.id
         if (id == null) {
             state.value = state.value?.copy(
-                password = Password(name = "", value = generatedPassword ?: ""),
+                password = if (generatedPassword == null) {
+                    Password(name = "", value = "")
+                } else {
+                    state.value?.password?.copy(value = generatedPassword)
+                },
                 showValueError = false,
                 showNameError = false
             )

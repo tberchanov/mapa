@@ -28,7 +28,7 @@ fun PasswordDataScreen(
 
     val state by viewModel.state.observeAsState()
     remember(passwordId) {
-        viewModel.postAction(CleanData(passwordId))
+//        viewModel.postAction(CleanData(passwordId))
         viewModel.postAction(LoadPassword(passwordId))
         true // stub, because remember cannot return Unit
     }
