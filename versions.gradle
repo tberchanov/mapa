@@ -1,7 +1,7 @@
 ext.versions = [
         // Version
-        version_name         : "1",
-        version_code         : 1,
+        version_name         : "1.0.1",
+        version_code         : 2,
 
         // Android Versions
         compile_sdk          : 30,
@@ -34,7 +34,7 @@ ext.versions = [
         room                 : '2.2.6',
         material             : '1.2.1',
         sql_cipher           : "4.4.0@aar",
-        biometric            : "1.0.1",
+        biometric            : "1.1.0",
         security             : "1.1.0-alpha03",
         rootbeer             : "0.0.8"
 ]

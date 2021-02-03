@@ -1,8 +1,8 @@
 package com.application.mapa.feature.fingerprint.usecase
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
+import androidx.fragment.app.FragmentActivity
 import com.application.mapa.feature.fingerprint.CryptographyManager
 import com.application.mapa.feature.fingerprint.R
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
@@ -17,7 +17,7 @@ class ShowBiometricPromptForDecryptionUseCase constructor(
 ) {
 
     fun execute(
-        activity: AppCompatActivity,
+        activity: FragmentActivity,
         onSuccess: (Cipher) -> Unit
     ) {
         ciphertextRepository.getCiphertext()?.let { textWrapper ->

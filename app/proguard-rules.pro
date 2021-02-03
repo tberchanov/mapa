@@ -1,1 +1,2 @@
--keepnames class com.application.mapa.data.domain.model.Password
+-keep,includedescriptorclasses class net.sqlcipher.** { *; }
+-keep,includedescriptorclasses interface net.sqlcipher.** { *; }

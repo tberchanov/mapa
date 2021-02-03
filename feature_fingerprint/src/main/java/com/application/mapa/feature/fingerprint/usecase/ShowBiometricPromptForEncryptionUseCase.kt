@@ -1,9 +1,10 @@
 package com.application.mapa.feature.fingerprint.usecase
 
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
 import androidx.biometric.BiometricPrompt
+import androidx.fragment.app.FragmentActivity
 import com.application.mapa.feature.fingerprint.CryptographyManager
 import com.application.mapa.feature.fingerprint.R
 import com.application.mapa.feature.fingerprint.usecase.CreatePromptInfoUseCase.Params
@@ -17,10 +18,10 @@ class ShowBiometricPromptForEncryptionUseCase(
 ) {
 
     fun execute(
-        activity: AppCompatActivity,
+        activity: FragmentActivity,
         onSuccess: (Cipher) -> Unit
     ) {
-        val canAuthenticate = BiometricManager.from(context).canAuthenticate()
+        val canAuthenticate = BiometricManager.from(context).canAuthenticate(BIOMETRIC_STRONG)
         if (canAuthenticate == BiometricManager.BIOMETRIC_SUCCESS) {
             val secretKeyName = context.getString(R.string.secret_key_name)
             val cipher = cryptographyManager.getInitializedCipherForEncryption(secretKeyName)

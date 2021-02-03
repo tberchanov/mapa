@@ -2,21 +2,21 @@ package com.application.mapa.feature.fingerprint.usecase
 
 import android.content.Context
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 
 class CreateBiometricPromptUseCase(
     private val context: Context
 ) {
 
     fun execute(
-        activity: AppCompatActivity,
+        activity: FragmentActivity,
         processSuccess: (BiometricPrompt.AuthenticationResult) -> Unit
     ) = createBiometricPrompt(activity, processSuccess)
 
     private fun createBiometricPrompt(
-        activity: AppCompatActivity,
+        activity: FragmentActivity,
         processSuccess: (BiometricPrompt.AuthenticationResult) -> Unit
     ): BiometricPrompt {
         val executor = ContextCompat.getMainExecutor(context)
