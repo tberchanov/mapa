@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -117,7 +118,7 @@ inline fun PasswordListTopBar(
                 IconButton(onClick = {
                     onCloseClicked()
                 }) {
-                    Icon(imageVector = Icons.Default.Close)
+                    Icon(imageVector = Icons.Default.Close, contentDescription = null)
                 }
             } else {
                 IconButton(onClick = {
@@ -125,7 +126,7 @@ inline fun PasswordListTopBar(
                 }) {
                     val imageRes = loadVectorResource(R.drawable.ic_settings)
                     imageRes.resource.resource?.let {
-                        Image(imageVector = it)
+                        Image(imageVector = it, contentDescription = null)
                     }
                 }
             }
@@ -146,7 +147,7 @@ fun PasswordListButton(
         onClick = if (selectionEnabled) onDeletePasswordsClick else onCreatePasswordClick
     ) {
         imageRes.resource.resource?.let {
-            Image(imageVector = it)
+            Image(imageVector = it, contentDescription = null)
         }
     }
 }

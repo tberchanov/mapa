@@ -15,7 +15,7 @@ fun VectorIconButton(
     IconButton(onClick = onClick, enabled = enabled) {
         val imageRes = loadVectorResource(resId)
         imageRes.resource.resource?.let {
-            Image(imageVector = it)
+            Image(imageVector = it, contentDescription = null)
         }
     }
 }

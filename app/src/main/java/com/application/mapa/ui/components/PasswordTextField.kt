@@ -49,7 +49,7 @@ fun PasswordTextField(
                         IconButton(onClick = {
                             onCopyClicked(text)
                         }) {
-                            Icon(imageVector = vectorResource(id = R.drawable.ic_copy))
+                            Icon(imageVector = vectorResource(id = R.drawable.ic_copy), contentDescription = null)
                         }
                     }
                     PasswordVisibilityIcon(passwordVisibility)
@@ -69,6 +69,6 @@ fun PasswordVisibilityIcon(passwordVisibility: MutableState<Boolean>) {
             true -> R.drawable.ic_visibility
             false -> R.drawable.ic_visibility_off
         }
-        Icon(imageVector = vectorResource(id = iconId))
+        Icon(imageVector = vectorResource(id = iconId), contentDescription = null)
     }
 }

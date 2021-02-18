@@ -1,6 +1,8 @@
 package com.application.mapa.feature.password.list
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -12,10 +14,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.ui.tooling.preview.Preview
-import com.application.mapa.data.domain.model.Password
 import com.application.mapa.feature.password.list.model.SelectablePassword
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PasswordItem(
     selectablePassword: SelectablePassword,
@@ -28,7 +29,7 @@ fun PasswordItem(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
-            .clickable(
+            .combinedClickable(
                 onClick = { onPasswordClick(selectablePassword) },
                 onLongClick = { onPasswordLongClick(selectablePassword) }
             ),
@@ -52,16 +53,4 @@ fun PasswordItem(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun PasswordItemPreview() {
-    PasswordItem(
-        selectablePassword = SelectablePassword(
-            password = Password(1, "name", "value"),
-            selected = true
-        ),
-        selectionEnabled = true
-    )
 }
