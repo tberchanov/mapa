@@ -4,7 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.material.IconButton
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.loadVectorResource
+import androidx.compose.ui.res.painterResource
 
 @Composable
 fun VectorIconButton(
@@ -13,9 +13,6 @@ fun VectorIconButton(
     enabled: Boolean = true
 ) {
     IconButton(onClick = onClick, enabled = enabled) {
-        val imageRes = loadVectorResource(resId)
-        imageRes.resource.resource?.let {
-            Image(imageVector = it, contentDescription = null)
-        }
+        Image(painter = painterResource(resId), contentDescription = null)
     }
 }

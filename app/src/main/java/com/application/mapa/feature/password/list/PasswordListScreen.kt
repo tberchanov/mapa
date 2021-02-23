@@ -15,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.loadVectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
@@ -46,7 +46,7 @@ fun PasswordListScreen(
                 onDeletePasswordsClick = { viewModel.deleteSelectedPasswords() }
             )
         },
-        bodyContent = {
+        content = {
             state?.run {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -124,10 +124,8 @@ inline fun PasswordListTopBar(
                 IconButton(onClick = {
                     onSettingsClicked()
                 }) {
-                    val imageRes = loadVectorResource(R.drawable.ic_settings)
-                    imageRes.resource.resource?.let {
-                        Image(imageVector = it, contentDescription = null)
-                    }
+                    val imageRes = painterResource(R.drawable.ic_settings)
+                    Image(painter = imageRes, contentDescription = null)
                 }
             }
         }
@@ -140,14 +138,12 @@ fun PasswordListButton(
     onCreatePasswordClick: () -> Unit,
     onDeletePasswordsClick: () -> Unit
 ) {
-    val imageRes = loadVectorResource(
+    val imageRes = painterResource(
         id = if (selectionEnabled) R.drawable.ic_delete else R.drawable.ic_add
     )
     FloatingActionButton(
         onClick = if (selectionEnabled) onDeletePasswordsClick else onCreatePasswordClick
     ) {
-        imageRes.resource.resource?.let {
-            Image(imageVector = it, contentDescription = null)
-        }
+        Image(painter = imageRes, contentDescription = null)
     }
 }

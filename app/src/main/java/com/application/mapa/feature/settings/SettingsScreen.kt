@@ -34,7 +34,7 @@ fun SettingsScreen(
                 }
             )
         },
-        bodyContent = {
+        content = {
             LazyColumn {
                 state?.settingsList?.let { settingsList ->
                     items(settingsList) {

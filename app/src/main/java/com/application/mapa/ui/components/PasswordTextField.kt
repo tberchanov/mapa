@@ -12,7 +12,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import com.application.mapa.R
@@ -36,8 +36,8 @@ fun PasswordTextField(
             }
         }
         TextField(
-            modifier = Modifier.fillMaxWidth(),
             value = text,
+            modifier = Modifier.fillMaxWidth(),
             onValueChange = onValueChange,
             visualTransformation = when (passwordVisibility.value) {
                 true -> VisualTransformation.None
@@ -49,13 +49,13 @@ fun PasswordTextField(
                         IconButton(onClick = {
                             onCopyClicked(text)
                         }) {
-                            Icon(imageVector = vectorResource(id = R.drawable.ic_copy), contentDescription = null)
+                            Icon(painter = painterResource(id = R.drawable.ic_copy), contentDescription = null)
                         }
                     }
                     PasswordVisibilityIcon(passwordVisibility)
                 }
             },
-            isErrorValue = isErrorValue
+            isError = isErrorValue
         )
     }
 }
@@ -69,6 +69,6 @@ fun PasswordVisibilityIcon(passwordVisibility: MutableState<Boolean>) {
             true -> R.drawable.ic_visibility
             false -> R.drawable.ic_visibility_off
         }
-        Icon(imageVector = vectorResource(id = iconId), contentDescription = null)
+        Icon(painter = painterResource(id = iconId), contentDescription = null)
     }
 }

@@ -1,10 +1,10 @@
 package com.application.mapa.feature.main
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.platform.setContent
 import androidx.navigation.compose.rememberNavController
 import com.application.mapa.feature.settings.SettingsViewModel
 import com.application.mapa.feature.settings.SettingsViewModelImpl

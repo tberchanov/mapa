@@ -4,10 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -19,7 +16,7 @@ fun EnterPasswordDialog(
     onDialogConfirmed: (String) -> Unit,
     onDialogCancelled: () -> Unit,
 ) {
-    var masterPasswordTextState by mutableStateOf("")
+    var masterPasswordTextState by remember { mutableStateOf("") }
 
     AlertDialog(
         onDismissRequest = onDialogCancelled,

@@ -50,10 +50,9 @@ fun PasswordDataScreen(
                 }
             )
         },
-        bodyContent = {
+        content = {
             Column(
-                modifier = Modifier
-                    .padding(16.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
                 NameTextField(
                     stringResource(R.string.name),
@@ -69,7 +68,7 @@ fun PasswordDataScreen(
                         fontSize = 12.sp
                     )
                 }
-                Spacer(modifier = Modifier.preferredHeight(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 PasswordTextField(
                     hint = stringResource(R.string.value),
                     text = state?.password?.value ?: "",
@@ -88,7 +87,7 @@ fun PasswordDataScreen(
                         fontSize = 12.sp
                     )
                 }
-                Spacer(modifier = Modifier.preferredHeight(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -121,7 +120,7 @@ fun NameTextField(
             modifier = Modifier.fillMaxWidth(),
             value = text,
             onValueChange = onValueChanged,
-            isErrorValue = isErrorValue
+            isError = isErrorValue
         )
     }
 }

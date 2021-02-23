@@ -36,7 +36,7 @@ fun MasterPasswordTextField(
                 bottom = 8.dp
             )
             .fillMaxWidth(),
-        isErrorValue = state.value.errorEnabled,
+        isError = state.value.errorEnabled,
         value = state.value.fieldValue,
         onValueChange = { onValueChanged(it) },
         label = { Text(state.value.placeholder) },
