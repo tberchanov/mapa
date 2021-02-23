@@ -10,7 +10,7 @@ ext.versions = [
 
         // Gradle Versions
         build_tools          : '30.0.3',
-        android_gradle_plugin: '7.0.0-alpha04',
+        android_gradle_plugin: '7.0.0-alpha07',
         hilt_gradle_plugin   : "2.29.1-alpha",
 
         // Dependency Versions

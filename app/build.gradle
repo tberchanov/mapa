@@ -20,16 +20,20 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
             minifyEnabled false
             shrinkResources false
             debuggable true
         }
         qa {
-            initWith debug
+            signingConfig signingConfigs.debug
+            applicationIdSuffix ".qa"
+            versionNameSuffix "-qa"
+            debuggable false
             minifyEnabled true
             shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            debuggable true
         }
         release {
             debuggable false

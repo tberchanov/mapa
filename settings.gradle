@@ -1,4 +1,3 @@
-rootProject.name = "mapa"
 include ':app'
 include ':feature_encryption'
 include ':feature_fingerprint'
