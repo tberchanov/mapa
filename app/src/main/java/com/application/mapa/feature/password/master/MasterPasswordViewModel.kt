@@ -38,7 +38,13 @@ class MasterPasswordViewModelImpl @ViewModelInject constructor(
     private val checkRootUseCase: CheckRootUseCase
 ) : ViewModel(), MasterPasswordViewModel {
 
-    override val state = MutableLiveData(MasterPasswordScreenState(false, null))
+    override val state = MutableLiveData(
+        MasterPasswordScreenState(
+            false,
+            null,
+            !storableManager.storableEnabled()
+        )
+    )
 
     init {
         viewModelScope.launch(Dispatchers.IO) {

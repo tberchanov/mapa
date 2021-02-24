@@ -4,5 +4,6 @@ import com.application.mapa.util.Event
 
 data class MasterPasswordScreenState(
     val showRootError: Boolean,
-    val verificationState: Event<PasswordVerificationState>?
+    val verificationState: Event<PasswordVerificationState>?,
+    val showWelcomeMessage: Boolean
 )

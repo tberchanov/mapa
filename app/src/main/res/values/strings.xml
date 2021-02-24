@@ -2,6 +2,7 @@
     <string name="app_name">mapa</string>
     <string name="master_password_hint">Master password</string>
     <string name="unlock">Unlock</string>
+    <string name="create">Create</string>
     <string name="passwords">Passwords</string>
     <string name="save">Save</string>
     <string name="name">Name</string>
@@ -28,4 +29,6 @@
     <string name="password_should_not_be_empty">Password should not be empty!</string>
     <string name="root_risk_message">Device is under the root risk!</string>
     <string name="root_risk_message_description">Your private data can be compromised. Please, check you smartphone and solve the issue. Or migrate all passwords from this application to another storage and remove them from here.</string>
+    <string name="master_password_welcome_title">Welcome!</string>
+    <string name="master_password_welcome_message">Create master password below.\nMaster password - this is only one password that you need to remember.\nIt will be used to protect the app and encrypt your data.</string>
 </resources>
