@@ -72,6 +72,11 @@ fun MasterPasswordScreen(
                         masterPasswordFieldState.value = masterPasswordFieldState.value.copy(
                             fieldValue = it
                         )
+                    },
+                    onDoneClicked = {
+                        viewModel.verifyMasterPassword(
+                            masterPasswordFieldState.value.fieldValue.text
+                        )
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))

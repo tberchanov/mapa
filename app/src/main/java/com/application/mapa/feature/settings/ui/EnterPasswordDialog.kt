@@ -38,6 +38,9 @@ fun EnterPasswordDialog(
                     text = masterPasswordTextState,
                     onValueChange = {
                         masterPasswordTextState = it
+                    },
+                    onDoneClicked = {
+                        onDialogConfirmed(masterPasswordTextState)
                     }
                 )
                 Spacer(modifier = Modifier.height(8.dp))

@@ -1,13 +1,15 @@
 package com.application.mapa.feature.password.data
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.onActive
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.application.mapa.R
@@ -27,10 +29,9 @@ fun PasswordDataScreen(
     ObservePasswordSavingState(viewModel, navigateUp)
 
     val state by viewModel.state.observeAsState()
-    remember(passwordId) {
+    onActive {
 //        viewModel.postAction(CleanData(passwordId))
         viewModel.postAction(LoadPassword(passwordId))
-        true // stub, because remember cannot return Unit
     }
 
     Scaffold(
@@ -61,7 +62,10 @@ fun PasswordDataScreen(
                     onValueChanged = {
                         viewModel.postAction(ModifyPasswordName(it))
                     },
-                    state?.showNameError == true
+                    state?.showNameError == true,
+                    onNextClicked = {
+                        TODO("Implement selection of password text field")
+                    }
                 )
                 if (state?.showNameError == true) {
                     ErrorText(
@@ -80,7 +84,10 @@ fun PasswordDataScreen(
                     onCopyClicked = {
                         viewModel.postAction(CopyPassword)
                     },
-                    isErrorValue = state?.showValueError == true
+                    isErrorValue = state?.showValueError == true,
+                    onDoneClicked = {
+                        viewModel.postAction(SavePassword)
+                    }
                 )
                 if (state?.showValueError == true) {
                     ErrorText(
@@ -109,7 +116,8 @@ fun NameTextField(
     hint: String,
     text: String,
     onValueChanged: (String) -> Unit,
-    isErrorValue: Boolean
+    isErrorValue: Boolean,
+    onNextClicked: () -> Unit
 ) {
     Column {
         if (isErrorValue) {
@@ -121,7 +129,13 @@ fun NameTextField(
             modifier = Modifier.fillMaxWidth(),
             value = text,
             onValueChange = onValueChanged,
-            isErrorValue = isErrorValue
+            isErrorValue = isErrorValue,
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
+            onImeActionPerformed = { imeAction, _ ->
+                if (imeAction == ImeAction.Next) {
+                    onNextClicked()
+                }
+            }
         )
     }
 }
