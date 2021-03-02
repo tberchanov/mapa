@@ -11,11 +11,13 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.application.mapa.R
 import com.application.mapa.ui.components.PasswordVisibilityIcon
 import com.application.mapa.util.contains
 
@@ -33,6 +35,7 @@ fun MasterPasswordTextField(
     onValueChanged: (TextFieldValue) -> Unit,
     onDoneClicked: () -> Unit
 ) {
+    val maxPasswordLength = integerResource(id = R.integer.max_field_length)
     val passwordVisibility = remember { mutableStateOf(false) }
     OutlinedTextField(
         modifier = Modifier
@@ -46,7 +49,7 @@ fun MasterPasswordTextField(
         isError = state.value.errorEnabled,
         value = state.value.fieldValue,
         onValueChange = {
-            if (!it.text.contains(blockCharacters)) {
+            if (!it.text.contains(blockCharacters) && it.text.length <= maxPasswordLength) {
                 onValueChanged(it)
             }
         },

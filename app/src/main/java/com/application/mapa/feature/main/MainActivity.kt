@@ -1,6 +1,8 @@
 package com.application.mapa.feature.main
 
 import android.os.Bundle
+import android.view.ViewGroup
+import android.view.WindowManager.LayoutParams.FLAG_SECURE
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
@@ -31,6 +33,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityProvider.setActivity(this)
+
+        window.setFlags(FLAG_SECURE, FLAG_SECURE)
 
         setContent {
             val navController = rememberNavController()

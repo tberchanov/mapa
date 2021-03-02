@@ -46,14 +46,13 @@ fun MainNavHost(
                 val passwordListViewModel: PasswordListViewModel =
                     viewModelProvider.provideViewModel<PasswordListViewModelImpl>(activity)
 
-                activityProvider.getActivity()
-                    ?.ObserveOnBackPressed(Destinations.PASSWORDS_LIST, navController) {
-                        if (passwordListViewModel.state.value?.selectionEnabled == true) {
-                            passwordListViewModel.disableSelection()
-                        } else {
-                            activityProvider.getActivity()?.finish()
-                        }
+                activity.ObserveOnBackPressed(Destinations.PASSWORDS_LIST, navController) {
+                    if (passwordListViewModel.state.value?.selectionEnabled == true) {
+                        passwordListViewModel.disableSelection()
+                    } else {
+                        activity.finish()
                     }
+                }
 
                 PasswordListScreen(
                     viewModel = passwordListViewModel,

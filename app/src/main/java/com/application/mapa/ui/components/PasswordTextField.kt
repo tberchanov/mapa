@@ -14,6 +14,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -34,6 +35,7 @@ fun PasswordTextField(
     isErrorValue: Boolean = false,
     onDoneClicked: () -> Unit
 ) {
+    val maxPasswordLength = integerResource(id = R.integer.max_field_length)
     val passwordVisibility = remember { mutableStateOf(false) }
     Column {
         if (hint != null) {
@@ -47,7 +49,7 @@ fun PasswordTextField(
             modifier = modifier.fillMaxWidth(),
             value = text,
             onValueChange = {
-                if (!it.contains(blockCharacters)) {
+                if (!it.contains(blockCharacters) && it.length <= maxPasswordLength) {
                     onValueChange(it)
                 }
             },

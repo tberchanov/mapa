@@ -16,7 +16,6 @@ inline fun ComponentActivity.ObserveOnBackPressed(
     onBackPressedDispatcher.addCallback {
         val currentRoute = navController.currentDestination
             ?.arguments?.get(KEY_ROUTE)?.defaultValue as? String
-        Log.e("TAG", "ObserveOnBackPressed: $currentRoute")
         if (currentRoute == route) {
             onBackPressed()
         } else {

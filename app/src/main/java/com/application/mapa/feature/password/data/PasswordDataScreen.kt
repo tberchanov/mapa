@@ -11,6 +11,7 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.res.integerResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -136,10 +137,15 @@ fun NameTextField(
         } else {
             Text(hint)
         }
+        val maxNameLength = integerResource(id = R.integer.max_field_length)
         TextField(
             modifier = Modifier.fillMaxWidth(),
             value = text,
-            onValueChange = onValueChanged,
+            onValueChange = {
+                if (it.length <= maxNameLength) {
+                    onValueChanged(it)
+                }
+            },
             isError = isErrorValue,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(onNext = { onNextClicked() })
