@@ -1,10 +1,9 @@
 package com.application.mapa.ui.components
 
-import androidx.compose.foundation.Interaction
-import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
@@ -12,7 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -58,23 +57,15 @@ fun PasswordTextField(
                         IconButton(onClick = {
                             onCopyClicked(text)
                         }) {
-                            Icon(imageVector = vectorResource(id = R.drawable.ic_copy))
+                            Icon(painter = painterResource(id = R.drawable.ic_copy), contentDescription = null)
                         }
                     }
                     PasswordVisibilityIcon(passwordVisibility)
                 }
             },
-            isErrorValue = isErrorValue,
+            isError = isErrorValue,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-            onImeActionPerformed = { imeAction, _ ->
-                if (imeAction == ImeAction.Done) {
-                    onDoneClicked()
-                }
-            },
-            interactionState = InteractionState().apply {
-                addInteraction(Interaction.Focused)
-                addInteraction(Interaction.Pressed)
-            }
+            keyboardActions = KeyboardActions(onDone = { onDoneClicked() }),
         )
     }
 }
@@ -88,6 +79,6 @@ fun PasswordVisibilityIcon(passwordVisibility: MutableState<Boolean>) {
             true -> R.drawable.ic_visibility
             false -> R.drawable.ic_visibility_off
         }
-        Icon(imageVector = vectorResource(id = iconId))
+        Icon(painter = painterResource(id = iconId), contentDescription = null)
     }
 }

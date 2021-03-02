@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -14,7 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.loadVectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.application.mapa.R
@@ -45,7 +46,7 @@ fun PasswordListScreen(
                 onDeletePasswordsClick = { viewModel.deleteSelectedPasswords() }
             )
         },
-        bodyContent = {
+        content = {
             state?.run {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
@@ -117,16 +118,13 @@ inline fun PasswordListTopBar(
                 IconButton(onClick = {
                     onCloseClicked()
                 }) {
-                    Icon(imageVector = Icons.Default.Close)
+                    Icon(imageVector = Icons.Default.Close, contentDescription = null)
                 }
             } else {
                 IconButton(onClick = {
                     onSettingsClicked()
                 }) {
-                    val imageRes = loadVectorResource(R.drawable.ic_settings)
-                    imageRes.resource.resource?.let {
-                        Image(imageVector = it)
-                    }
+                    Image(painter = painterResource(R.drawable.ic_settings), contentDescription = null)
                 }
             }
         }
@@ -139,14 +137,12 @@ fun PasswordListButton(
     onCreatePasswordClick: () -> Unit,
     onDeletePasswordsClick: () -> Unit
 ) {
-    val imageRes = loadVectorResource(
+    val painterRes = painterResource(
         id = if (selectionEnabled) R.drawable.ic_delete else R.drawable.ic_add
     )
     FloatingActionButton(
         onClick = if (selectionEnabled) onDeletePasswordsClick else onCreatePasswordClick
     ) {
-        imageRes.resource.resource?.let {
-            Image(imageVector = it)
-        }
+        Image(painter = painterRes, contentDescription = null)
     }
 }

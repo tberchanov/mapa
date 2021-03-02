@@ -2,6 +2,7 @@ package com.application.mapa.feature.password.master
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -42,7 +43,7 @@ fun MasterPasswordTextField(
                 bottom = 8.dp
             )
             .fillMaxWidth(),
-        isErrorValue = state.value.errorEnabled,
+        isError = state.value.errorEnabled,
         value = state.value.fieldValue,
         onValueChange = {
             if (!it.text.contains(blockCharacters)) {
@@ -56,10 +57,6 @@ fun MasterPasswordTextField(
         },
         trailingIcon = { PasswordVisibilityIcon(passwordVisibility) },
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
-        onImeActionPerformed = { imeAction, _ ->
-            if (imeAction == ImeAction.Done) {
-                onDoneClicked()
-            }
-        }
+        keyboardActions = KeyboardActions(onDone = { onDoneClicked() })
     )
 }

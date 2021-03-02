@@ -1,12 +1,13 @@
 package com.application.mapa.feature.password.data
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.onActive
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -29,10 +30,16 @@ fun PasswordDataScreen(
     ObservePasswordSavingState(viewModel, navigateUp)
 
     val state by viewModel.state.observeAsState()
-    onActive {
-//        viewModel.postAction(CleanData(passwordId))
-        viewModel.postAction(LoadPassword(passwordId))
-    }
+
+    DisposableEffect(
+        key1 = state?.password?.id,
+        effect = {
+            viewModel.postAction(LoadPassword(passwordId))
+            this.onDispose {
+                viewModel.postAction(CleanData(passwordId))
+            }
+        }
+    )
 
     Scaffold(
         topBar = {
@@ -51,7 +58,7 @@ fun PasswordDataScreen(
                 }
             )
         },
-        bodyContent = {
+        content = {
             Column(
                 modifier = Modifier
                     .padding(16.dp)
@@ -73,7 +80,7 @@ fun PasswordDataScreen(
                         fontSize = 12.sp
                     )
                 }
-                Spacer(modifier = Modifier.preferredHeight(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 PasswordTextField(
                     hint = stringResource(R.string.value),
                     text = state?.password?.value ?: "",
@@ -95,7 +102,7 @@ fun PasswordDataScreen(
                         fontSize = 12.sp
                     )
                 }
-                Spacer(modifier = Modifier.preferredHeight(12.dp))
+                Spacer(modifier = Modifier.height(12.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
@@ -129,13 +136,9 @@ fun NameTextField(
             modifier = Modifier.fillMaxWidth(),
             value = text,
             onValueChange = onValueChanged,
-            isErrorValue = isErrorValue,
+            isError = isErrorValue,
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
-            onImeActionPerformed = { imeAction, _ ->
-                if (imeAction == ImeAction.Next) {
-                    onNextClicked()
-                }
-            }
+            keyboardActions = KeyboardActions(onNext = { onNextClicked() })
         )
     }
 }

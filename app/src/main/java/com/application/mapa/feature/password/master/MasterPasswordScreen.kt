@@ -1,8 +1,8 @@
 package com.application.mapa.feature.password.master
 
-import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Button
 import androidx.compose.material.Scaffold
@@ -56,47 +56,50 @@ fun MasterPasswordScreen(
     )
 
     Scaffold(
-        bodyContent = {
-            ScrollableColumn(
+        content = {
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Bottom
             ) {
-                if (state?.showWelcomeMessage == true) {
-                    MasterPasswordWelcomeMessage()
-                }
-                MasterPasswordTextField(
-                    state = masterPasswordFieldState,
-                    onValueChanged = {
-                        masterPasswordFieldState.value = masterPasswordFieldState.value.copy(
-                            fieldValue = it
-                        )
-                    },
-                    onDoneClicked = {
+                item {
+
+                    if (state?.showWelcomeMessage == true) {
+                        MasterPasswordWelcomeMessage()
+                    }
+                    MasterPasswordTextField(
+                        state = masterPasswordFieldState,
+                        onValueChanged = {
+                            masterPasswordFieldState.value = masterPasswordFieldState.value.copy(
+                                fieldValue = it
+                            )
+                        },
+                        onDoneClicked = {
+                            viewModel.verifyMasterPassword(
+                                masterPasswordFieldState.value.fieldValue.text
+                            )
+                        }
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(onClick = {
                         viewModel.verifyMasterPassword(
                             masterPasswordFieldState.value.fieldValue.text
                         )
+                    }) {
+                        Text(text = getVerifyPasswordButtonText(state?.showWelcomeMessage))
                     }
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-                Button(onClick = {
-                    viewModel.verifyMasterPassword(
-                        masterPasswordFieldState.value.fieldValue.text
-                    )
-                }) {
-                    Text(text = getVerifyPasswordButtonText(state?.showWelcomeMessage))
-                }
 
-                if (state?.showRootError == true) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    ErrorMessage(
-                        stringResource(R.string.root_risk_message),
-                        stringResource(R.string.root_risk_message_description)
-                    )
-                }
+                    if (state?.showRootError == true) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        ErrorMessage(
+                            stringResource(R.string.root_risk_message),
+                            stringResource(R.string.root_risk_message_description)
+                        )
+                    }
 
-                Spacer(modifier = Modifier.height(290.dp))
+                    Spacer(modifier = Modifier.height(290.dp))
+                }
             }
         }
     )
