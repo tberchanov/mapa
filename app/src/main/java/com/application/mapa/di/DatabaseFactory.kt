@@ -22,6 +22,11 @@ class DatabaseFactory(
         )
     }
 
+    fun closeDatabase() {
+        database?.close()
+        database = null
+    }
+
     @Throws(IllegalStateException::class)
     fun getDatabase(): AppDatabase {
         return database ?: throw IllegalStateException("Database is not opened yet!")

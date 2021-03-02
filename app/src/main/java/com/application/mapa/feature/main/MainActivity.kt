@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
 import androidx.navigation.compose.rememberNavController
+import com.application.mapa.di.DatabaseFactory
 import com.application.mapa.feature.settings.SettingsViewModel
 import com.application.mapa.feature.settings.SettingsViewModelImpl
 import com.application.mapa.navigation.MainNavHost
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var viewModelProvider: ViewModelProvider
+
+    @Inject
+    lateinit var databaseFactory: DatabaseFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +55,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         activityProvider.clear()
+        databaseFactory.closeDatabase()
         super.onDestroy()
     }
 }
