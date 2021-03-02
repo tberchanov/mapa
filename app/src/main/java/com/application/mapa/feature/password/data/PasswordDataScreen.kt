@@ -9,6 +9,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
@@ -63,6 +65,7 @@ fun PasswordDataScreen(
                 modifier = Modifier
                     .padding(16.dp)
             ) {
+                val passwordFocusRequester = FocusRequester()
                 NameTextField(
                     stringResource(R.string.name),
                     state?.password?.name ?: "",
@@ -71,7 +74,7 @@ fun PasswordDataScreen(
                     },
                     state?.showNameError == true,
                     onNextClicked = {
-                        TODO("Implement selection of password text field")
+                        passwordFocusRequester.requestFocus()
                     }
                 )
                 if (state?.showNameError == true) {
@@ -82,6 +85,7 @@ fun PasswordDataScreen(
                 }
                 Spacer(modifier = Modifier.height(12.dp))
                 PasswordTextField(
+                    modifier = Modifier.focusRequester(passwordFocusRequester),
                     hint = stringResource(R.string.value),
                     text = state?.password?.value ?: "",
                     onValueChange = {
