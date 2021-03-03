@@ -97,6 +97,10 @@ fun MasterPasswordScreen(
                             stringResource(R.string.root_risk_message_description)
                         )
                     }
+                    if (state?.showTryLaterMessage == true) {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        ErrorMessage(stringResource(R.string.try_later_message))
+                    }
 
                     Spacer(modifier = Modifier.height(290.dp))
                 }

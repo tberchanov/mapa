@@ -13,6 +13,7 @@ import com.application.mapa.feature.encryption.database.storable.StorableManager
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.fingerprint.usecase.DecryptDataFromStorageUseCase
 import com.application.mapa.feature.fingerprint.usecase.ShowBiometricPromptForDecryptionUseCase
+import com.application.mapa.feature.password.master.bruteforce.BruteForceManager
 import com.application.mapa.feature.password.master.model.MasterPasswordScreenState
 import com.application.mapa.feature.password.master.model.PasswordVerificationState.PasswordVerificationFailure
 import com.application.mapa.feature.password.master.model.PasswordVerificationState.PasswordVerified
@@ -35,14 +36,16 @@ class MasterPasswordViewModelImpl @ViewModelInject constructor(
     private val showBiometricPromptForDecryptionUseCase: ShowBiometricPromptForDecryptionUseCase,
     private val activityProvider: ActivityProvider,
     private val decryptDataFromStorageUseCase: DecryptDataFromStorageUseCase,
-    private val checkRootUseCase: CheckRootUseCase
+    private val checkRootUseCase: CheckRootUseCase,
+    private val bruteForceManager: BruteForceManager
 ) : ViewModel(), MasterPasswordViewModel {
 
     override val state = MutableLiveData(
         MasterPasswordScreenState(
             false,
             null,
-            !storableManager.storableEnabled()
+            !storableManager.storableEnabled(),
+            false
         )
     )
 
@@ -70,24 +73,39 @@ class MasterPasswordViewModelImpl @ViewModelInject constructor(
 
     override fun verifyMasterPassword(password: String) {
         viewModelScope.launch(Dispatchers.Default) {
-            runCatching {
-                if (!storableManager.storableEnabled()) {
-                    generateKeys(password)
-                }
-                databaseFactory.openDatabase(password)
-            }.fold(
-                onSuccess = {
-                    state.postValue(
-                        state.value?.copy(verificationState = Event(PasswordVerified))
+            if (bruteForceManager.canPasswordBeChecked()) {
+                verifyMasterPasswordAfterBruteForceCheck(password)
+            } else {
+                state.postValue(
+                    state.value?.copy(
+                        verificationState = Event(PasswordVerificationFailure),
+                        showTryLaterMessage = true
                     )
-                },
-                onFailure = {
-                    state.postValue(
-                        state.value?.copy(verificationState = Event(PasswordVerificationFailure))
-                    )
-                }
-            )
+                )
+            }
         }
+    }
+
+    private suspend fun verifyMasterPasswordAfterBruteForceCheck(password: String) {
+        runCatching {
+            if (!storableManager.storableEnabled()) {
+                generateKeys(password)
+            }
+            databaseFactory.openDatabase(password)
+        }.fold(
+            onSuccess = {
+                bruteForceManager.correctPassword()
+                state.postValue(
+                    state.value?.copy(verificationState = Event(PasswordVerified))
+                )
+            },
+            onFailure = {
+                bruteForceManager.incorrectPassword()
+                state.postValue(
+                    state.value?.copy(verificationState = Event(PasswordVerificationFailure))
+                )
+            }
+        )
     }
 
     private fun generateKeys(password: String) {

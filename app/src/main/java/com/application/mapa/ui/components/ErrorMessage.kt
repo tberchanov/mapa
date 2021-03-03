@@ -16,11 +16,11 @@ import com.application.mapa.R
 @Composable
 fun ErrorMessage(
     message: String,
-    description: String
+    description: String? = null
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
-    if (showDialog) {
+    if (showDialog && description != null) {
         AlertDialog(
             onDismissRequest = { showDialog = false },
             text = { Text(description) },
@@ -42,7 +42,11 @@ fun ErrorMessage(
     }
 
     Card(
-        modifier = Modifier.clickable(onClick = { showDialog = true }),
+        modifier = Modifier.clickable(onClick = {
+            if (description != null) {
+                showDialog = true
+            }
+        }),
         shape = RoundedCornerShape(14.dp),
         backgroundColor = MaterialTheme.colors.error
     ) {
