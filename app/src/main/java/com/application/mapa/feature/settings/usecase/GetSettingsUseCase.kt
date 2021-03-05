@@ -17,14 +17,22 @@ class GetSettingsUseCase(
             SettingsItem(
                 context.getString(R.string.fingerprint_setting),
                 SettingsId.FINGERPRINT,
-                SettingsType.SWITCH,
-                settingsRepository.isFingerprintEnabled()
+                SettingsType.Switch(settingsRepository.isFingerprintEnabled()),
             ),
             SettingsItem(
                 context.getString(R.string.dark_theme_setting),
                 SettingsId.DARK_THEME,
-                SettingsType.SWITCH,
-                settingsRepository.isDarkThemeEnabled()
+                SettingsType.Switch(settingsRepository.isDarkThemeEnabled())
+            ),
+            SettingsItem(
+                context.getString(R.string.export_data_setting),
+                SettingsId.EXPORT_DATA,
+                SettingsType.Icon(R.drawable.ic_export)
+            ),
+            SettingsItem(
+                context.getString(R.string.import_data_setting),
+                SettingsId.IMPORT_DATA,
+                SettingsType.Icon(R.drawable.ic_import)
             )
         )
     }

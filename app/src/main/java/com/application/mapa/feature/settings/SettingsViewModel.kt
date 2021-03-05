@@ -1,23 +1,22 @@
 package com.application.mapa.feature.settings
 
+import android.util.Log
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
+import androidx.lifecycle.*
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.fingerprint.usecase.EncryptAndStoreDataUseCase
 import com.application.mapa.feature.fingerprint.usecase.ShowBiometricPromptForEncryptionUseCase
-import com.application.mapa.feature.settings.model.SettingsAction
+import com.application.mapa.feature.settings.model.*
 import com.application.mapa.feature.settings.model.SettingsAction.*
-import com.application.mapa.feature.settings.model.SettingsId
-import com.application.mapa.feature.settings.model.SettingsItem
-import com.application.mapa.feature.settings.model.SettingsState
 import com.application.mapa.feature.settings.repository.SettingsRepository
+import com.application.mapa.feature.settings.usecase.ExportDataUseCase
 import com.application.mapa.feature.settings.usecase.GetSettingsUseCase
 import com.application.mapa.feature.settings.usecase.InitSettingsUseCase
 import com.application.mapa.feature.settings.usecase.SetDarkThemeUseCase
 import com.application.mapa.util.ActivityProvider
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 interface SettingsViewModel {
     val state: LiveData<SettingsState>
@@ -33,10 +32,11 @@ class SettingsViewModelImpl @ViewModelInject constructor(
     private val ciphertextRepository: CiphertextRepository,
     private val setDarkThemeUseCase: SetDarkThemeUseCase,
     initSettingsUseCase: InitSettingsUseCase,
-    settingsRepository: SettingsRepository
+    settingsRepository: SettingsRepository,
+    private val exportDataUseCase: ExportDataUseCase
 ) : ViewModel(), SettingsViewModel {
 
-    override val state = MutableLiveData(SettingsState(emptyList(), false))
+    override val state = MutableLiveData(SettingsState(emptyList(), false, showProgress = false))
 
     override val darkThemeEnabled = settingsRepository.observeDarkThemeEnabled().asLiveData()
 
@@ -48,13 +48,34 @@ class SettingsViewModelImpl @ViewModelInject constructor(
     }
 
     override fun postAction(action: SettingsAction): Unit = when (action) {
-        is ChangeBooleanSetting -> processChangeBooleanSettings(action)
+        is BooleanSettingChanged -> processChangeBooleanSettings(action)
         is EnterPasswordDialogCancel -> {
             state.value = state.value?.copy(showEnterPasswordDialog = false)
         }
         is EnterPasswordDialogConfirm -> {
             state.value = state.value?.copy(showEnterPasswordDialog = false)
             processEnterPasswordDialogConfirm(action.password)
+        }
+        is SettingClicked -> processSettingsClicked(action)
+    }
+
+    private fun processSettingsClicked(action: SettingClicked) {
+        when (action.id) {
+            SettingsId.IMPORT_DATA -> {
+                // TODO implement import data
+            }
+            SettingsId.EXPORT_DATA -> exportData()
+            else -> Log.d("SettingsViewModel", "${action.id} click is not processed!")
+        }
+    }
+
+    private fun exportData() {
+        viewModelScope.launch(Dispatchers.Main) {
+            state.value = state.value?.copy(showProgress = true)
+            withContext(Dispatchers.IO) {
+                exportDataUseCase.execute()
+            }
+            state.value = state.value?.copy(showProgress = false)
         }
     }
 
@@ -67,11 +88,12 @@ class SettingsViewModelImpl @ViewModelInject constructor(
         }
     }
 
-    private fun processChangeBooleanSettings(
-        action: ChangeBooleanSetting
-    ) = when (action.id) {
-        SettingsId.FINGERPRINT -> processChangeFingerprintSetting(action.value)
-        SettingsId.DARK_THEME -> processChangeDarkThemeSetting(action.value)
+    private fun processChangeBooleanSettings(action: BooleanSettingChanged) {
+        when (action.id) {
+            SettingsId.FINGERPRINT -> processChangeFingerprintSetting(action.value)
+            SettingsId.DARK_THEME -> processChangeDarkThemeSetting(action.value)
+            else -> Log.d("SettingsViewModel", "${action.id} is not a boolean setting!")
+        }
     }
 
     private fun processChangeDarkThemeSetting(darkThemeEnabled: Boolean) {
@@ -104,24 +126,32 @@ class SettingsViewModelImpl @ViewModelInject constructor(
         fingerprintEnabled: Boolean,
         settingsItems: List<SettingsItem>
     ): List<SettingsItem> {
-        return changeBooleanSettings(fingerprintEnabled, SettingsId.FINGERPRINT, settingsItems)
+        return changeSettingType(
+            SettingsType.Switch(fingerprintEnabled),
+            SettingsId.FINGERPRINT,
+            settingsItems
+        )
     }
 
     private fun changeDarkThemeSetting(
         darkThemeEnable: Boolean,
         settingsItems: List<SettingsItem>
     ): List<SettingsItem> {
-        return changeBooleanSettings(darkThemeEnable, SettingsId.DARK_THEME, settingsItems)
+        return changeSettingType(
+            SettingsType.Switch(darkThemeEnable),
+            SettingsId.DARK_THEME,
+            settingsItems
+        )
     }
 
-    private fun changeBooleanSettings(
-        value: Boolean,
+    private fun changeSettingType(
+        type: SettingsType,
         settingsId: SettingsId,
         settingsItems: List<SettingsItem>
     ): List<SettingsItem> {
         return settingsItems.map {
             if (it.id == settingsId) {
-                it.copy(value = value)
+                it.copy(type = type)
             } else {
                 it
             }

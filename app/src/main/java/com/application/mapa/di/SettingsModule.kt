@@ -4,9 +4,7 @@ import android.content.Context
 import com.application.mapa.feature.fingerprint.repository.CiphertextRepository
 import com.application.mapa.feature.settings.repository.SettingsRepository
 import com.application.mapa.feature.settings.repository.SettingsRepositoryPrefs
-import com.application.mapa.feature.settings.usecase.GetSettingsUseCase
-import com.application.mapa.feature.settings.usecase.InitSettingsUseCase
-import com.application.mapa.feature.settings.usecase.SetDarkThemeUseCase
+import com.application.mapa.feature.settings.usecase.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -44,4 +42,10 @@ class SettingsModule {
     fun provideSetDarkThemeUseCase(
         settingsRepository: SettingsRepository
     ) = SetDarkThemeUseCase(settingsRepository)
+
+    @Provides
+    fun provideExportDataUseCase() = ExportDataUseCase()
+
+    @Provides
+    fun provideImportDataUseCase() = ImportDataUseCase()
 }

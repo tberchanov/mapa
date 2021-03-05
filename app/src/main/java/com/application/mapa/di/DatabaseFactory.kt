@@ -6,7 +6,6 @@ import com.application.mapa.feature.encryption.database.Decryptor
 import dagger.hilt.android.qualifiers.ApplicationContext
 
 class DatabaseFactory(
-    @ApplicationContext
     private val context: Context,
     private val decryptor: Decryptor
 ) {

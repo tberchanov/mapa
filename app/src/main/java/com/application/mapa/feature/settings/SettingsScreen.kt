@@ -15,6 +15,7 @@ import com.application.mapa.feature.settings.model.SettingsAction.EnterPasswordD
 import com.application.mapa.feature.settings.ui.EnterPasswordDialog
 import com.application.mapa.feature.settings.ui.SettingItem
 import com.application.mapa.ui.components.BackIconButton
+import com.application.mapa.ui.components.FullscreenProgress
 
 @Composable
 fun SettingsScreen(
@@ -44,6 +45,10 @@ fun SettingsScreen(
             }
         }
     )
+
+    if (state?.showProgress == true) {
+        FullscreenProgress()
+    }
 
     if (state?.showEnterPasswordDialog == true) {
         EnterPasswordDialog(
