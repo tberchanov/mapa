@@ -5,13 +5,14 @@ Password manager Android application
 - Fully offline app, network connection is not needed. So, user data cannot be intercepted throw network.
 - Password and fingerprint lock.
 - All data are encrypted.
+- Flexible password generator.
 - Root protection.
 
 ## Used technologies:
 - Jetpack Compose
 - Hilt
 - Room
-- Jetpack biometrics
+- Jetpack biometric
 - Coroutines
 - Jetpack ViewModel, LiveData
 - SQLCipher
