@@ -3,7 +3,6 @@ package com.application.mapa.di
 import com.application.mapa.data.database.dao.PasswordDao
 import com.application.mapa.data.repository.PasswordRepository
 import com.application.mapa.data.repository.PasswordRepositoryDB
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

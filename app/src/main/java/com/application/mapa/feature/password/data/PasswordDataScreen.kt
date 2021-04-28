@@ -1,8 +1,6 @@
 package com.application.mapa.feature.password.data
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -63,8 +61,7 @@ fun PasswordDataScreen(
         },
         content = {
             Column(
-                modifier = Modifier
-                    .padding(16.dp)
+                modifier = Modifier.padding(16.dp)
             ) {
                 val passwordFocusRequester = FocusRequester()
                 NameTextField(

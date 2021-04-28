@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.view.WindowManager.LayoutParams.FLAG_SECURE
 import androidx.activity.compose.setContent
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.remember
